@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000" role="img" aria-label="Mochila Sol en Verde oliva">
+  <defs>
+    <linearGradient id="cuerpo" x1="0" y1="0" x2="0.35" y2="1">
+      <stop offset="0" stop-color="rgb(140, 140, 114)"/>
+      <stop offset="0.55" stop-color="#6B6B4A"/>
+      <stop offset="1" stop-color="rgb(77, 77, 53)"/>
+    </linearGradient>
+    <linearGradient id="solapa" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="rgb(122, 122, 92)"/>
+      <stop offset="1" stop-color="rgb(92, 92, 64)"/>
+    </linearGradient>
+    <linearGradient id="asa" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="rgb(62, 62, 43)"/>
+      <stop offset="0.5" stop-color="rgb(94, 94, 65)"/>
+      <stop offset="1" stop-color="rgb(62, 62, 43)"/>
+    </linearGradient>
+    <radialGradient id="sombra">
+      <stop offset="0" stop-color="rgba(60,45,32,.30)"/>
+      <stop offset="1" stop-color="rgba(60,45,32,0)"/>
+    </radialGradient>
+    <clipPath id="marco"><rect width="800" height="1000"/></clipPath>
+  </defs>
+
+  <rect width="800" height="1000" fill="#F3EFE8"/>
+
+  <g clip-path="url(#marco)">
+    <g transform="translate(400 466) rotate(0) scale(1.16) translate(-400 -500)">
+      <ellipse cx="400" cy="796" rx="196" ry="30" fill="url(#sombra)"/>
+      
+    <path d="M258 402 h284 a34 34 0 0 1 34 34 v308 a30 30 0 0 1-30 30 H254
+             a30 30 0 0 1-30-30 V436 a34 34 0 0 1 34-34 Z" fill="url(#cuerpo)"/>
+    <path d="M224 436 a34 34 0 0 1 34-34 h284 a34 34 0 0 1 34 34 v124
+             q-176 40-352 0 Z" fill="url(#solapa)"/>
+    <path d="M296 402 c0-108 46-162 104-162 s104 54 104 162"
+          fill="none" stroke="url(#asa)" stroke-width="11" stroke-linecap="round"/>
+    <rect x="372" y="536" width="56" height="34" rx="9" fill="rgba(0,0,0,.24)"/>
+    <path d="M262 660 h276" stroke="rgba(0,0,0,.09)" stroke-width="4"/>
+    </g>
+  </g>
+
+  <text x="40" y="944" font-family="Georgia, serif" font-size="30" fill="rgba(43,39,34,.62)">Mochila Sol</text>
+  <text x="40" y="976" font-family="system-ui, sans-serif" font-size="19" letter-spacing="2.4" fill="rgba(43,39,34,.38)">VERDE OLIVA · FRENTE</text>
+  <text x="760" y="976" text-anchor="end" font-family="system-ui, sans-serif" font-size="17" letter-spacing="3" fill="rgba(43,39,34,.24)">FOTO DE EJEMPLO</text>
+</svg>

@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000" role="img" aria-label="Shopper Vera en Hueso">
+  <defs>
+    <linearGradient id="cuerpo" x1="0" y1="0" x2="0.35" y2="1">
+      <stop offset="0" stop-color="rgb(225, 217, 204)"/>
+      <stop offset="0.55" stop-color="#D9CEBE"/>
+      <stop offset="1" stop-color="rgb(156, 148, 137)"/>
+    </linearGradient>
+    <linearGradient id="solapa" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="rgb(221, 211, 197)"/>
+      <stop offset="1" stop-color="rgb(187, 177, 163)"/>
+    </linearGradient>
+    <linearGradient id="asa" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="rgb(126, 119, 110)"/>
+      <stop offset="0.5" stop-color="rgb(191, 181, 167)"/>
+      <stop offset="1" stop-color="rgb(126, 119, 110)"/>
+    </linearGradient>
+    <radialGradient id="sombra">
+      <stop offset="0" stop-color="rgba(60,45,32,.30)"/>
+      <stop offset="1" stop-color="rgba(60,45,32,0)"/>
+    </radialGradient>
+    <clipPath id="marco"><rect width="800" height="1000"/></clipPath>
+  </defs>
+
+  <rect width="800" height="1000" fill="#F3EFE8"/>
+
+  <g clip-path="url(#marco)">
+    <g transform="translate(400 466) rotate(3) scale(1.7399999999999998) translate(-400 -500)">
+      <ellipse cx="400" cy="796" rx="196" ry="30" fill="url(#sombra)"/>
+      
+    <path d="M206 396 h388 l30 356 a26 26 0 0 1-26 28 H202 a26 26 0 0 1-26-28 Z"
+          fill="url(#cuerpo)"/>
+    <path d="M276 396 c0-116 52-172 124-172 s124 56 124 172"
+          fill="none" stroke="url(#asa)" stroke-width="15" stroke-linecap="round"/>
+    <path d="M206 396 h388" stroke="rgba(0,0,0,.12)" stroke-width="3"/>
+    <path d="M240 470 q160 34 320 0" fill="none" stroke="rgba(0,0,0,.07)" stroke-width="6"/>
+    </g>
+  </g>
+
+  <text x="40" y="944" font-family="Georgia, serif" font-size="30" fill="rgba(43,39,34,.62)">Shopper Vera</text>
+  <text x="40" y="976" font-family="system-ui, sans-serif" font-size="19" letter-spacing="2.4" fill="rgba(43,39,34,.38)">HUESO · DETALLE</text>
+  <text x="760" y="976" text-anchor="end" font-family="system-ui, sans-serif" font-size="17" letter-spacing="3" fill="rgba(43,39,34,.24)">FOTO DE EJEMPLO</text>
+</svg>

@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="es" data-base="." data-pagina="inicio">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Open After · Bolsos Vursse</title>
+    <meta
+      name="description"
+      content="Bolsos Vursse hechos para durar y acompañar. Totes, bandoleras, mochilas y clutches. Pedidos por WhatsApp."
+    />
+    <meta name="theme-color" content="#FAF7F2" />
+    <link rel="canonical" href="https://larivasd.github.io/open-after/" />
+    <link rel="icon" href="img/favicon.svg" type="image/svg+xml" />
+
+    <!-- Previsualización al compartir el enlace por WhatsApp e Instagram -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Open After" />
+    <meta property="og:title" content="Open After · Bolsos Vursse" />
+    <meta
+      property="og:description"
+      content="Bolsos Vursse hechos para durar y acompañar. Pedidos por WhatsApp."
+    />
+    <meta
+      property="og:image"
+      content="https://larivasd.github.io/open-after/img/portada.svg"
+    />
+    <meta property="og:url" content="https://larivasd.github.io/open-after/" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="stylesheet" href="css/tokens.css" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/componentes.css" />
+    <link rel="stylesheet" href="css/paginas.css" />
+  </head>
+
+  <body>
+    <div data-slot="encabezado"></div>
+
+    <main id="contenido">
+      <!-- ================= HERO ================= -->
+      <section class="hero" aria-labelledby="titulo-hero">
+        <div class="contenedor hero__rejilla">
+          <div class="hero__texto">
+            <span class="eyebrow">Vursse — Colección permanente</span>
+            <h1 class="hero__titulo" id="titulo-hero">
+              Bolsos que
+              <em>te acompañan</em>
+            </h1>
+            <p class="lead">
+              Piezas de cuero y lona hechas para el uso diario, no para la
+              vitrina. Se gastan bien: con los años se ven mejor que el día que
+              llegaron.
+            </p>
+            <div class="hero__pie">
+              <a class="btn btn--primario btn--grande" href="catalogo.html">
+                Ver el catálogo
+              </a>
+              <a class="enlace-linea" href="#la-marca">Conocer la marca</a>
+            </div>
+          </div>
+
+          <div class="hero__fotos" data-hero-fotos></div>
+        </div>
+      </section>
+
+      <!-- ================= CINTA DE VALORES ================= -->
+      <section class="cinta" aria-label="Por qué comprar en Open After">
+        <div class="contenedor">
+          <ul class="cinta__lista" role="list">
+            <li class="cinta__item">
+              <strong>Materiales honestos</strong>
+              <span>Cuero curtido al vegetal y lonas naturales</span>
+            </li>
+            <li class="cinta__item">
+              <strong>Hecho en cantidades cortas</strong>
+              <span>Series pequeñas, sin sobreproducción</span>
+            </li>
+            <li class="cinta__item">
+              <strong>Atención directa</strong>
+              <span>Hablas con nosotros, no con un formulario</span>
+            </li>
+            <li class="cinta__item">
+              <strong>Envíos a todo el país</strong>
+              <span>Coordinamos contigo por WhatsApp</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ================= DESTACADOS ================= -->
+      <section class="seccion" aria-labelledby="titulo-destacados">
+        <div class="contenedor">
+          <div class="seccion__cabecera">
+            <div>
+              <span class="eyebrow">Los más pedidos</span>
+              <h2 id="titulo-destacados">Selección de la casa</h2>
+            </div>
+            <!-- data-cuenta-modelos lo rellena inicio.js; sin JS queda
+                 "Ver los modelos", que también se lee bien. -->
+            <a class="enlace-linea" href="catalogo.html">
+              Ver los <span data-cuenta-modelos></span> modelos
+            </a>
+          </div>
+          <div class="rejilla-productos" data-destacados></div>
+        </div>
+      </section>
+
+      <!-- ================= LA MARCA ================= -->
+      <section class="seccion" id="la-marca" aria-labelledby="titulo-marca">
+        <div class="contenedor editorial">
+          <figure class="editorial__foto" data-editorial-foto></figure>
+
+          <div class="editorial__texto prose">
+            <span class="eyebrow">La marca</span>
+            <h2 id="titulo-marca" style="margin-block: var(--space-2xs) var(--space-md)">
+              Vursse empezó por un bolso que no encontrábamos
+            </h2>
+            <p>
+              Queríamos algo simple: un bolso del tamaño correcto, con asas que
+              aguantaran el peso real de un día y un cuero que no se pelara al
+              tercer mes. No lo encontramos, así que lo mandamos a hacer.
+            </p>
+            <p>
+              Cada pieza se produce en series cortas con talleres pequeños. Eso
+              significa que a veces algo se agota y hay que esperar, pero también
+              que nada se fabrica de más para terminar rematado.
+            </p>
+            <p>
+              <strong>Open After</strong> es donde los vendemos. Sin pasarela de
+              pago ni carritos abandonados: eliges lo que quieres, nos escribes
+              por WhatsApp y cerramos el pedido hablando.
+            </p>
+            <div style="margin-top: var(--space-lg)">
+              <a class="enlace-linea" href="catalogo.html">Ver todo el catálogo</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= NOVEDADES ================= -->
+      <section class="seccion" aria-labelledby="titulo-novedades">
+        <div class="contenedor">
+          <div class="seccion__cabecera">
+            <div>
+              <span class="eyebrow">Recién llegados</span>
+              <h2 id="titulo-novedades">Nuevo esta temporada</h2>
+            </div>
+          </div>
+          <div class="rejilla-productos" data-novedades></div>
+        </div>
+      </section>
+
+      <!-- ================= CIERRE ================= -->
+      <section class="seccion">
+        <div class="contenedor">
+          <div class="cierre">
+            <span class="eyebrow" style="color: oklch(72% 0.06 50)">
+              ¿Dudas con la talla o el color?
+            </span>
+            <h2 style="margin-top: var(--space-sm)">
+              Escríbenos y te ayudamos a elegir
+            </h2>
+            <p>
+              Te mandamos fotos reales, medidas comparadas y te decimos qué entra
+              y qué no. Respondemos en el día.
+            </p>
+            <a
+              class="btn btn--whatsapp btn--grande"
+              data-cta-whatsapp
+              href="#"
+              target="_blank"
+              rel="noopener"
+            >
+              Hablar por WhatsApp
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div data-slot="pie"></div>
+
+    <script defer src="js/config.js"></script>
+    <script defer src="js/productos.js"></script>
+    <script defer src="js/util.js"></script>
+    <script defer src="js/iconos.js"></script>
+    <script defer src="js/whatsapp.js"></script>
+    <script defer src="js/carrito.js"></script>
+    <script defer src="js/tarjeta.js"></script>
+    <script defer src="js/layout.js"></script>
+    <script defer src="js/carrito-ui.js"></script>
+    <script defer src="js/inicio.js"></script>
+  </body>
+</html>

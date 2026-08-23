@@ -1,0 +1,679 @@
+/* ==========================================================================
+   Open After — Componentes compartidos
+   Header, botones, tarjeta de producto, carrito, toast.
+   ========================================================================== */
+
+/* --- Botones --------------------------------------------------------------
+   Tres niveles reales de énfasis. El hover levanta con transform, nunca
+   cambiando padding o borde (eso provoca reflow). */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2xs);
+  padding: 0.8em 1.6em;
+  border-radius: var(--radius-control);
+  font-size: var(--text-small);
+  font-weight: 600;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: transform var(--dur-fast) var(--ease-out-soft),
+    background-color var(--dur-fast) linear,
+    color var(--dur-fast) linear,
+    box-shadow var(--dur-normal) var(--ease-out-soft),
+    opacity var(--dur-fast) linear;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn:active {
+  transform: translateY(0);
+  transition-duration: 60ms;
+}
+
+.btn[disabled],
+.btn[aria-disabled="true"] {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.btn--primario {
+  background-color: var(--c-ink);
+  color: var(--c-bone);
+  box-shadow: var(--shadow-subtle);
+}
+
+.btn--primario:hover {
+  background-color: var(--c-terracota-deep);
+  box-shadow: var(--shadow-lift);
+}
+
+.btn--secundario {
+  background-color: transparent;
+  color: var(--c-ink);
+  box-shadow: inset 0 0 0 1px var(--c-line-strong);
+}
+
+.btn--secundario:hover {
+  box-shadow: inset 0 0 0 1px var(--c-ink);
+}
+
+.btn--whatsapp {
+  background-color: var(--c-terracota);
+  color: var(--c-paper);
+  box-shadow: var(--shadow-subtle);
+}
+
+.btn--whatsapp:hover {
+  background-color: var(--c-terracota-deep);
+  box-shadow: var(--shadow-lift);
+}
+
+.btn--bloque {
+  width: 100%;
+}
+
+.btn--grande {
+  padding: 1em 2.2em;
+  font-size: var(--text-base);
+}
+
+/* Enlace con subrayado que crece desde la izquierda al pasar el cursor. */
+.enlace-linea {
+  position: relative;
+  display: inline-block;
+  font-size: var(--text-small);
+  font-weight: 600;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  text-decoration: none;
+  padding-bottom: 2px;
+}
+
+.enlace-linea::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 1px;
+  background-color: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur-normal) var(--ease-out-expo);
+}
+
+.enlace-linea:hover::after,
+.enlace-linea:focus-visible::after {
+  transform: scaleX(1);
+}
+
+/* --- Header ---------------------------------------------------------------
+   Sticky con fondo translúcido. El borde inferior aparece solo al hacer
+   scroll (lo activa layout.js con data-desplazado). */
+
+.encabezado {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-header);
+  background-color: oklch(97.5% 0.008 85 / 0.86);
+  backdrop-filter: blur(12px) saturate(1.4);
+  transition: box-shadow var(--dur-normal) var(--ease-out-soft);
+}
+
+.encabezado[data-desplazado="true"] {
+  box-shadow: 0 1px 0 var(--c-line), var(--shadow-subtle);
+}
+
+.encabezado__barra {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  min-height: 4.5rem;
+}
+
+.marca {
+  display: inline-flex;
+  flex-direction: column;
+  text-decoration: none;
+  line-height: 1;
+}
+
+.marca__nombre {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  letter-spacing: var(--tracking-tight);
+}
+
+.marca__sub {
+  font-size: var(--text-micro);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--c-ink-faint);
+  margin-top: 3px;
+}
+
+.nav-principal {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+}
+
+.nav-principal a {
+  font-size: var(--text-small);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--c-ink-soft);
+  transition: color var(--dur-fast) linear;
+}
+
+.nav-principal a:hover,
+.nav-principal a[aria-current="page"] {
+  color: var(--c-ink);
+}
+
+.encabezado__acciones {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xs);
+}
+
+/* Botón icónico: header, galería, drawer. */
+.btn-icono {
+  display: grid;
+  place-items: center;
+  position: relative;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: var(--radius-pill);
+  color: var(--c-ink);
+  transition: background-color var(--dur-fast) linear,
+    transform var(--dur-fast) var(--ease-out-soft);
+}
+
+.btn-icono:hover {
+  background-color: var(--c-bone-deep);
+}
+
+.btn-icono:active {
+  transform: scale(0.94);
+}
+
+.btn-icono svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* Contador del carrito. Se oculta en cero para no mostrar un "0" muerto. */
+.contador-carrito {
+  position: absolute;
+  top: 0.3rem;
+  right: 0.25rem;
+  min-width: 1.15rem;
+  height: 1.15rem;
+  padding-inline: 0.28em;
+  display: grid;
+  place-items: center;
+  background-color: var(--c-terracota);
+  color: var(--c-paper);
+  border-radius: var(--radius-pill);
+  font-size: 0.65rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  transition: transform var(--dur-normal) var(--ease-out-expo);
+}
+
+.contador-carrito[hidden] {
+  display: none;
+}
+
+/* Rebote al añadir un producto. */
+.contador-carrito[data-pulso="true"] {
+  transform: scale(1.35);
+}
+
+.btn-menu {
+  display: none;
+}
+
+@media (max-width: 52rem) {
+  .nav-principal {
+    display: none;
+  }
+
+  .nav-principal[data-abierto="true"] {
+    position: absolute;
+    inset-inline: 0;
+    top: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-sm);
+    padding: var(--space-md) var(--gutter) var(--space-lg);
+    background-color: var(--c-bone);
+    border-block: 1px solid var(--c-line);
+  }
+
+  .btn-menu {
+    display: grid;
+  }
+}
+
+/* --- Tarjeta de producto -------------------------------------------------- */
+
+/* Dos por fila en móvil: es lo que espera quien compra ropa o accesorios, y
+   evita que el catálogo se convierta en un scroll interminable. A partir de
+   640px la rejilla se adapta sola al ancho disponible. */
+.rejilla-productos {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-md) var(--space-sm);
+}
+
+@media (min-width: 40rem) {
+  .rejilla-productos {
+    grid-template-columns: repeat(auto-fill, minmax(min(15rem, 100%), 1fr));
+    gap: var(--space-lg) var(--space-md);
+  }
+}
+
+.tarjeta {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+}
+
+.tarjeta__marco {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--c-shot);
+  border-radius: var(--radius-shot);
+  aspect-ratio: 4 / 5;
+}
+
+.tarjeta__foto {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--dur-slow) var(--ease-out-expo);
+}
+
+/* Segunda foto revelada al pasar el cursor: se precarga con la tarjeta. */
+.tarjeta__foto--alterna {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity var(--dur-normal) var(--ease-out-soft);
+}
+
+.tarjeta:hover .tarjeta__foto,
+.tarjeta:focus-visible .tarjeta__foto {
+  transform: scale(1.045);
+}
+
+.tarjeta:hover .tarjeta__foto--alterna,
+.tarjeta:focus-visible .tarjeta__foto--alterna {
+  opacity: 1;
+}
+
+.tarjeta__cuerpo {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  padding-top: var(--space-xs);
+}
+
+.tarjeta__nombre {
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  letter-spacing: var(--tracking-tight);
+}
+
+.tarjeta__precio {
+  font-size: 1rem;
+  color: var(--c-ink-soft);
+}
+
+.tarjeta__meta {
+  font-size: var(--text-small);
+  color: var(--c-ink-faint);
+}
+
+/* Con dos tarjetas por fila no cabe "Bandolera Mía" y el precio en la misma
+   línea, así que el precio pasa debajo. */
+@media (max-width: 40rem) {
+  .tarjeta__cuerpo {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1px;
+  }
+
+  .tarjeta__nombre {
+    font-size: 0.9375rem;
+  }
+}
+
+/* Insignias: esquina superior izquierda de la foto. */
+.insignia {
+  position: absolute;
+  top: var(--space-2xs);
+  left: var(--space-2xs);
+  z-index: 1;
+  padding: 0.32em 0.7em;
+  border-radius: var(--radius-pill);
+  font-size: var(--text-micro);
+  font-weight: 600;
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  background-color: var(--c-ink);
+  color: var(--c-bone);
+}
+
+.insignia--nuevo {
+  background-color: var(--c-terracota);
+  color: var(--c-paper);
+}
+
+.insignia--agotado {
+  background-color: var(--c-bone);
+  color: var(--c-ink-soft);
+  box-shadow: inset 0 0 0 1px var(--c-line-strong);
+}
+
+/* --- Carrito (panel lateral) ---------------------------------------------- */
+
+.scrim {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-scrim);
+  background-color: oklch(23% 0.014 60 / 0.42);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-normal) var(--ease-out-soft);
+}
+
+.scrim[data-abierto="true"] {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.carrito {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: var(--z-drawer);
+  display: flex;
+  flex-direction: column;
+  width: min(26rem, 100vw);
+  height: 100svh;
+  background-color: var(--c-paper);
+  box-shadow: var(--shadow-panel);
+  transform: translateX(100%);
+  transition: transform var(--dur-normal) var(--ease-out-expo);
+}
+
+.carrito[data-abierto="true"] {
+  transform: translateX(0);
+}
+
+.carrito__cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  padding: var(--space-md) var(--space-md) var(--space-sm);
+  border-bottom: 1px solid var(--c-line);
+}
+
+.carrito__titulo {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+}
+
+.carrito__lista {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: var(--space-sm) var(--space-md);
+  margin: 0;
+  list-style: none;
+}
+
+.carrito__vacio {
+  display: grid;
+  place-content: center;
+  gap: var(--space-sm);
+  height: 100%;
+  text-align: center;
+  color: var(--c-ink-faint);
+  padding: var(--space-lg);
+}
+
+.linea {
+  display: grid;
+  grid-template-columns: 4.5rem 1fr;
+  gap: var(--space-sm);
+  padding-block: var(--space-sm);
+}
+
+.linea + .linea {
+  border-top: 1px solid var(--c-line);
+}
+
+.linea__foto {
+  width: 4.5rem;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  background-color: var(--c-shot);
+  border-radius: var(--radius-shot);
+}
+
+.linea__info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3xs);
+  min-width: 0;
+}
+
+.linea__nombre {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  line-height: 1.25;
+}
+
+.linea__variante {
+  font-size: var(--text-small);
+  color: var(--c-ink-faint);
+}
+
+.linea__pie {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2xs);
+  margin-top: auto;
+  padding-top: var(--space-2xs);
+}
+
+.linea__precio {
+  font-size: var(--text-small);
+  color: var(--c-ink-soft);
+}
+
+/* Control de cantidad, reutilizado en la ficha y en el carrito. */
+.cantidad {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--c-line-strong);
+  border-radius: var(--radius-control);
+  overflow: hidden;
+}
+
+.cantidad__btn {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  font-size: 1rem;
+  line-height: 1;
+  color: var(--c-ink-soft);
+  transition: background-color var(--dur-fast) linear,
+    color var(--dur-fast) linear;
+}
+
+.cantidad__btn:hover:not([disabled]) {
+  background-color: var(--c-bone-deep);
+  color: var(--c-ink);
+}
+
+.cantidad__btn[disabled] {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.cantidad__valor {
+  min-width: 2.25rem;
+  text-align: center;
+  font-size: var(--text-small);
+  font-variant-numeric: tabular-nums;
+}
+
+.cantidad--grande .cantidad__btn {
+  width: 2.75rem;
+  height: 2.75rem;
+}
+
+.cantidad--grande .cantidad__valor {
+  min-width: 3rem;
+  font-size: var(--text-base);
+}
+
+.linea__quitar {
+  font-size: var(--text-small);
+  color: var(--c-ink-faint);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  transition: color var(--dur-fast) linear;
+}
+
+.linea__quitar:hover {
+  color: var(--c-danger);
+}
+
+.carrito__pie {
+  padding: var(--space-md);
+  border-top: 1px solid var(--c-line);
+  background-color: var(--c-bone);
+  display: grid;
+  gap: var(--space-sm);
+}
+
+.carrito__total {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.carrito__total-cifra {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.carrito__nota {
+  font-size: var(--text-small);
+  color: var(--c-ink-faint);
+  text-align: center;
+}
+
+/* --- Toast ---------------------------------------------------------------- */
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: var(--space-md);
+  z-index: var(--z-toast);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  padding: var(--space-2xs) var(--space-md);
+  background-color: var(--c-ink);
+  color: var(--c-bone);
+  border-radius: var(--radius-pill);
+  font-size: var(--text-small);
+  box-shadow: var(--shadow-lift);
+  opacity: 0;
+  transform: translate(-50%, 1rem);
+  pointer-events: none;
+  transition: opacity var(--dur-normal) var(--ease-out-soft),
+    transform var(--dur-normal) var(--ease-out-expo);
+}
+
+.toast[data-visible="true"] {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+/* --- Pie de página -------------------------------------------------------- */
+
+.pie {
+  margin-top: var(--space-2xl);
+  padding-block: var(--space-xl) var(--space-lg);
+  background-color: var(--c-bone-deep);
+  border-top: 1px solid var(--c-line);
+}
+
+.pie__rejilla {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(13rem, 100%), 1fr));
+  gap: var(--space-lg);
+  align-items: start;
+}
+
+.pie__titulo {
+  font-size: var(--text-micro);
+  font-weight: 600;
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--c-ink-faint);
+  margin-bottom: var(--space-xs);
+}
+
+.pie__lista {
+  display: grid;
+  gap: var(--space-2xs);
+  list-style: none;
+  padding: 0;
+  font-size: var(--text-small);
+}
+
+.pie__lista a {
+  text-decoration: none;
+  color: var(--c-ink-soft);
+  transition: color var(--dur-fast) linear;
+}
+
+.pie__lista a:hover {
+  color: var(--c-terracota-deep);
+}
+
+.pie__base {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  margin-top: var(--space-xl);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--c-line);
+  font-size: var(--text-small);
+  color: var(--c-ink-faint);
+}

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://larivasd.github.io/open-after/sitemap.xml
