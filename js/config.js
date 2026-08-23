@@ -58,7 +58,7 @@ window.OA.config = Object.freeze({
   /* --- Mensaje de WhatsApp -----------------------------------------------
      Encabezado y cierre del pedido que se autogenera desde el carrito. */
   mensaje: Object.freeze({
-    saludo: "¡Hola Open After! 👋",
+    saludo: "¡Hola Open After!",
     intro: "Quiero hacer un pedido:",
     cierre: "¿Me confirman disponibilidad y el costo de envío?",
   }),
