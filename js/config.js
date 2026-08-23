@@ -29,8 +29,8 @@ window.OA.config = Object.freeze({
        Colombia   57 + 3001234567  ->  "573001234567"
        México     52 + 5512345678  ->  "525512345678"
        España     34 + 612345678   ->  "34612345678"
-     ⚠️ CAMBIA ESTE NÚMERO ANTES DE PUBLICAR. */
-  whatsapp: "584141234567",
+     Configurado: +58 424 142 2408 */
+  whatsapp: "584241422408",
 
   /* --- Moneda ------------------------------------------------------------
      `locale` controla el separador de miles y decimales.
