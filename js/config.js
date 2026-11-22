@@ -20,7 +20,7 @@ window.OA.config = Object.freeze({
      GitHub Pages:  https://TU-USUARIO.github.io/open-after
      Dominio propio: https://openafter.com
      ⚠️ CAMBIA ESTO ANTES DE PUBLICAR. */
-  sitio: "https://larivasd.github.io/open-after",
+  sitio: "https://open-after.com",
 
   /* --- WhatsApp ----------------------------------------------------------
      Número en formato internacional, SIN el signo +, sin espacios ni guiones.
