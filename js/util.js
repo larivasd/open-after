@@ -64,15 +64,30 @@
 
   const buscarPorId = (id) => productos().find((p) => p.id === id) || null;
 
-  /* Devuelve la ruta de la foto n (1-indexada) de un producto.
-     Cambia la extensión aquí si usas .jpg o .webp en lugar de .svg. */
-  const EXTENSION_FOTO = "svg";
+  /* Devuelve la ruta de la foto n (1-indexada) de un color de un producto.
+     Cambia la extensión aquí si usas .svg o .webp en lugar de .jpg. */
+  const EXTENSION_FOTO = "jpg";
 
-  const rutaFoto = (producto, indice = 1) =>
-    ruta(`img/productos/${producto.id}-${indice}.${EXTENSION_FOTO}`);
+  /* Cada color tiene su propia tanda de fotos: <id>-<color>-<n>.jpg.
+     El slug del color sale de su nombre (sin acentos, en minúsculas y con
+     guiones), así "Azul marino" se vuelve "azul-marino". */
+  const slugColor = (nombre) => normalizar(nombre).replace(/\s+/g, "-");
 
-  const todasLasFotos = (producto) =>
-    Array.from({ length: producto.fotos }, (_, i) => rutaFoto(producto, i + 1));
+  const rutaFoto = (producto, nombreColor, indice = 1) =>
+    ruta(
+      `img/productos/${producto.id}-${slugColor(nombreColor)}-${indice}.${EXTENSION_FOTO}`,
+    );
+
+  const colorDe = (producto, nombreColor) =>
+    producto.colores.find((c) => c.nombre === nombreColor) ||
+    producto.colores[0];
+
+  const todasLasFotos = (producto, nombreColor) => {
+    const color = colorDe(producto, nombreColor);
+    return Array.from({ length: color.fotos }, (_, i) =>
+      rutaFoto(producto, color.nombre, i + 1),
+    );
+  };
 
   const rutaProducto = (producto) => ruta(`productos/${producto.id}.html`);
 
@@ -159,6 +174,7 @@
     productos,
     buscarPorId,
     rutaFoto,
+    colorDe,
     todasLasFotos,
     rutaProducto,
     categorias,

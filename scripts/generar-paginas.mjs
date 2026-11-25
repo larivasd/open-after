@@ -68,11 +68,16 @@ function validar(productos) {
     if (!Number.isFinite(p.precio) || p.precio <= 0) {
       problemas.push(`${p.id}: precio inválido (${p.precio})`);
     }
-    if (!Number.isInteger(p.fotos) || p.fotos < 1) {
-      problemas.push(`${p.id}: "fotos" debe ser un entero >= 1`);
-    }
     if (!Array.isArray(p.colores) || p.colores.length === 0) {
       problemas.push(`${p.id}: necesita al menos un color`);
+    } else {
+      for (const c of p.colores) {
+        if (!Number.isInteger(c.fotos) || c.fotos < 1) {
+          problemas.push(
+            `${p.id}: el color "${c.nombre}" necesita "fotos" como entero >= 1`,
+          );
+        }
+      }
     }
   }
 
@@ -98,14 +103,27 @@ function resumir(texto, limite = 155) {
   return `${corte.slice(0, corte.lastIndexOf(" "))}…`;
 }
 
-const EXTENSION_FOTO = "svg"; // debe coincidir con EXTENSION_FOTO en js/util.js
+const EXTENSION_FOTO = "jpg"; // debe coincidir con EXTENSION_FOTO en js/util.js
+
+/* Reproduce slugColor() de js/util.js: el nombre del color sin acentos, en
+   minúsculas y con guiones en vez de espacios. */
+function slugColor(nombre) {
+  return String(nombre)
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .replace(/\s+/g, "-");
+}
+
+const rutaFotoColor = (producto, color, indice) =>
+  `img/productos/${producto.id}-${slugColor(color.nombre)}-${indice}.${EXTENSION_FOTO}`;
 
 /* --- Plantilla --------------------------------------------------------------- */
 
 function plantilla(producto, config) {
   const base = config.sitio.replace(/\/+$/, "");
   const url = `${base}/productos/${producto.id}.html`;
-  const imagen = `${base}/img/productos/${producto.id}-1.${EXTENSION_FOTO}`;
+  const imagen = `${base}/${rutaFotoColor(producto, producto.colores[0], 1)}`;
   const titulo = `${producto.nombre} · ${config.marca}`;
   const descripcion = resumir(producto.descripcion);
 
@@ -116,9 +134,11 @@ function plantilla(producto, config) {
     "@type": "Product",
     name: producto.nombre,
     description: descripcion,
-    image: Array.from(
-      { length: producto.fotos },
-      (_, i) => `${base}/img/productos/${producto.id}-${i + 1}.${EXTENSION_FOTO}`,
+    image: producto.colores.flatMap((color) =>
+      Array.from(
+        { length: color.fotos },
+        (_, i) => `${base}/${rutaFotoColor(producto, color, i + 1)}`,
+      ),
     ),
     brand: { "@type": "Brand", name: config.producto },
     category: producto.categoria,
@@ -167,7 +187,7 @@ function plantilla(producto, config) {
     <link
       rel="preload"
       as="image"
-      href="../img/productos/${esc(producto.id)}-1.${EXTENSION_FOTO}"
+      href="../${esc(rutaFotoColor(producto, producto.colores[0], 1))}"
     />
 
     <script type="application/ld+json">

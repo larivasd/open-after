@@ -547,12 +547,23 @@
 }
 
 .color-opcion {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
   padding: 0.5em 1em;
   border-radius: var(--radius-control);
   font-size: var(--text-small);
   color: var(--c-ink-soft);
   box-shadow: inset 0 0 0 1px var(--c-line-strong);
   transition: box-shadow var(--dur-fast) linear, color var(--dur-fast) linear;
+}
+
+.color-opcion__muestra {
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 15%);
+  flex-shrink: 0;
 }
 
 .color-opcion:hover {

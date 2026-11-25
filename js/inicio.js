@@ -54,7 +54,7 @@
     zona.innerHTML = html`
       <figure class="hero__foto hero__foto--alta">
         <img
-          src="${rutaFoto(primero, 1)}"
+          src="${rutaFoto(primero, primero.colores[0].nombre, 1)}"
           alt="${primero.nombre}"
           width="600"
           height="1000"
@@ -64,7 +64,7 @@
       </figure>
       <figure class="hero__foto hero__foto--baja">
         <img
-          src="${rutaFoto(segundo, 1)}"
+          src="${rutaFoto(segundo, segundo.colores[0].nombre, 1)}"
           alt="${segundo.nombre}"
           width="480"
           height="600"
@@ -87,7 +87,11 @@
 
     zona.innerHTML = html`
       <img
-        src="${rutaFoto(insignia, insignia.fotos > 2 ? 3 : 1)}"
+        src="${rutaFoto(
+          insignia,
+          insignia.colores[0].nombre,
+          insignia.colores[0].fotos > 2 ? 3 : 1,
+        )}"
         alt="${insignia.nombre}"
         width="640"
         height="800"

@@ -5,6 +5,10 @@
    propiedad que el compositor puede resolver sin recalcular layout. En táctil
    el zoom real lo hace el navegador con pinch dentro del lightbox, que es
    más fluido que cualquier gestor de gestos en JS.
+
+   Cada color del producto trae su propia tanda de fotos, así que la galería
+   expone `actualizar(nuevasFotos)` para repintarse cuando se elige otro color
+   sin reconstruir la ficha entera.
    ========================================================================== */
 
 (function () {
@@ -15,69 +19,77 @@
 
   const ZOOM = 2.1; // debe coincidir con background-size en paginas.css
 
-  function crear(contenedor, fotos, nombreProducto) {
-    if (fotos.length === 0) return null;
+  function crear(contenedor, fotosIniciales, nombreProducto) {
+    if (fotosIniciales.length === 0) return null;
 
+    let fotos = fotosIniciales;
     let indice = 0;
+    let marco;
+    let principal;
     let lightbox = null;
     let ultimoFoco = null;
 
-    /* --- Marcado ---------------------------------------------------------- */
+    /* --- Pintado ------------------------------------------------------------
+       Se puede llamar más de una vez: al cambiar de color, el marco y las
+       miniaturas se reconstruyen desde cero con la nueva tanda de fotos. */
 
-    const miniaturas = fotos
-      .map(
-        (src, i) => html`
-          <button
-            class="miniatura"
-            type="button"
-            data-indice="${i}"
-            aria-current="${String(i === 0)}"
-            aria-label="Ver foto ${i + 1} de ${fotos.length}"
+    function pintar() {
+      const miniaturas = fotos
+        .map(
+          (src, i) => html`
+            <button
+              class="miniatura"
+              type="button"
+              data-indice="${i}"
+              aria-current="${String(i === 0)}"
+              aria-label="Ver foto ${i + 1} de ${fotos.length}"
+            >
+              <img
+                src="${src}"
+                alt=""
+                width="96"
+                height="96"
+                loading="lazy"
+                decoding="async"
+              />
+            </button>
+          `,
+        )
+        .join("");
+
+      contenedor.innerHTML = html`
+        <div class="galeria">
+          <div
+            class="galeria__marco"
+            data-marco
+            data-zoom="false"
+            role="button"
+            tabindex="0"
+            aria-label="Ampliar la foto de ${nombreProducto}"
           >
             <img
-              src="${src}"
-              alt=""
-              width="96"
-              height="96"
-              loading="lazy"
+              data-principal
+              src="${fotos[0]}"
+              alt="${nombreProducto}, foto 1 de ${fotos.length}"
+              width="800"
+              height="1000"
+              fetchpriority="high"
               decoding="async"
             />
-          </button>
-        `,
-      )
-      .join("");
-
-    contenedor.innerHTML = html`
-      <div class="galeria">
-        <div
-          class="galeria__marco"
-          data-marco
-          data-zoom="false"
-          role="button"
-          tabindex="0"
-          aria-label="Ampliar la foto de ${nombreProducto}"
-        >
-          <img
-            data-principal
-            src="${fotos[0]}"
-            alt="${nombreProducto}, foto 1 de ${fotos.length}"
-            width="800"
-            height="1000"
-            fetchpriority="high"
-            decoding="async"
-          />
-          <span class="galeria__pista">${raw(iconos.lupaMas)} Ampliar</span>
+            <span class="galeria__pista">${raw(iconos.lupaMas)} Ampliar</span>
+          </div>
+          ${raw(
+            fotos.length > 1
+              ? html`<div class="galeria__miniaturas">${raw(miniaturas)}</div>`
+              : "",
+          )}
         </div>
-        ${raw(
-          fotos.length > 1
-            ? html`<div class="galeria__miniaturas">${raw(miniaturas)}</div>`
-            : "",
-        )}
-      </div>
-    `;
+      `;
 
-    const marco = contenedor.querySelector("[data-marco]");
-    const principal = contenedor.querySelector("[data-principal]");
+      marco = contenedor.querySelector("[data-marco]");
+      principal = contenedor.querySelector("[data-principal]");
+      conectarMarco();
+    }
 
     /* --- Cambio de foto ---------------------------------------------------- */
 
@@ -96,6 +108,21 @@
       });
 
       if (lightbox) actualizarLightbox();
+    }
+
+    /* Cambia a otro color: nuevas fotos, se vuelve a la primera y se cierra
+       cualquier lightbox abierto (sus botones de navegación quedarían
+       referenciando la tanda anterior). */
+    function actualizar(nuevasFotos) {
+      if (nuevasFotos.length === 0) return;
+      cerrarLightbox();
+      if (lightbox) {
+        lightbox.remove();
+        lightbox = null;
+      }
+      fotos = nuevasFotos;
+      indice = 0;
+      pintar();
     }
 
     contenedor.addEventListener("click", (evento) => {
@@ -132,18 +159,29 @@
       marco.dataset.zoom = "false";
     }
 
-    marco.addEventListener("pointerenter", (evento) => {
-      if (evento.pointerType !== "mouse") return;
-      activarZoom();
-      moverZoom(evento);
-    });
+    /* Vuelve a enganchar los eventos propios del marco cada vez que se
+       repinta, porque `pintar()` lo reemplaza por un nodo nuevo. */
+    function conectarMarco() {
+      marco.addEventListener("pointerenter", (evento) => {
+        if (evento.pointerType !== "mouse") return;
+        activarZoom();
+        moverZoom(evento);
+      });
 
-    marco.addEventListener("pointermove", (evento) => {
-      if (evento.pointerType !== "mouse" || marco.dataset.zoom !== "true") return;
-      moverZoom(evento);
-    });
+      marco.addEventListener("pointermove", (evento) => {
+        if (evento.pointerType !== "mouse" || marco.dataset.zoom !== "true") return;
+        moverZoom(evento);
+      });
 
-    marco.addEventListener("pointerleave", desactivarZoom);
+      marco.addEventListener("pointerleave", desactivarZoom);
+      marco.addEventListener("click", abrirLightbox);
+      marco.addEventListener("keydown", (evento) => {
+        if (evento.key === "Enter" || evento.key === " ") {
+          evento.preventDefault();
+          abrirLightbox();
+        }
+      });
+    }
 
     /* --- Lightbox ------------------------------------------------------------ */
 
@@ -229,15 +267,6 @@
       if (ultimoFoco && document.contains(ultimoFoco)) ultimoFoco.focus();
     }
 
-    marco.addEventListener("click", abrirLightbox);
-
-    marco.addEventListener("keydown", (evento) => {
-      if (evento.key === "Enter" || evento.key === " ") {
-        evento.preventDefault();
-        abrirLightbox();
-      }
-    });
-
     document.addEventListener("keydown", (evento) => {
       const abierto = lightbox && lightbox.dataset.abierto === "true";
 
@@ -255,7 +284,9 @@
       }
     });
 
-    return { mostrar, abrirLightbox };
+    pintar();
+
+    return { mostrar, actualizar, abrirLightbox };
   }
 
   window.OA.galeria = { crear };

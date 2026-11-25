@@ -23,7 +23,8 @@
   /* `prioridad` marca las primeras tarjetas visibles: sin lazy y con
      fetchpriority alto, para que la LCP no espere. El resto va perezoso. */
   function tarjeta(producto, { prioridad = false } = {}) {
-    const tieneAlterna = producto.fotos > 1;
+    const primerColor = producto.colores[0];
+    const tieneAlterna = primerColor.fotos > 1;
     const cargaPrincipal = prioridad
       ? 'loading="eager" fetchpriority="high"'
       : 'loading="lazy"';
@@ -38,8 +39,8 @@
           ${raw(insignia(producto))}
           <img
             class="tarjeta__foto"
-            src="${rutaFoto(producto, 1)}"
-            alt="${producto.nombre} en ${producto.colores[0].nombre}"
+            src="${rutaFoto(producto, primerColor.nombre, 1)}"
+            alt="${producto.nombre} en ${primerColor.nombre}"
             width="480"
             height="600"
             ${raw(cargaPrincipal)}
@@ -49,7 +50,7 @@
             tieneAlterna
               ? html`<img
                   class="tarjeta__foto tarjeta__foto--alterna"
-                  src="${rutaFoto(producto, 2)}"
+                  src="${rutaFoto(producto, primerColor.nombre, 2)}"
                   alt=""
                   width="480"
                   height="600"

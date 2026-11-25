@@ -25,6 +25,7 @@
   let colorElegido;
   let cantidad = 1;
   let raiz;
+  let galeriaInstancia;
 
   /* --- Piezas de la vista ----------------------------------------------------- */
 
@@ -54,6 +55,11 @@
             data-color="${c.nombre}"
             aria-pressed="${String(c.nombre === colorElegido)}"
           >
+            <span
+              class="color-opcion__muestra"
+              style="background-color: ${c.hex}"
+              aria-hidden="true"
+            ></span>
             ${c.nombre}
           </button>
         `,
@@ -249,6 +255,12 @@
     if (consultar) {
       consultar.href = whatsapp.enlaceProducto(producto, colorElegido);
     }
+
+    // Cada color trae su propia tanda de fotos: la galería se repinta con
+    // las que correspondan en vez de quedarse con las del color anterior.
+    if (galeriaInstancia) {
+      galeriaInstancia.actualizar(todasLasFotos(producto, colorElegido));
+    }
   }
 
   function conectar() {
@@ -316,9 +328,9 @@
       ${raw(marcaRelacionados())}
     `;
 
-    galeria.crear(
+    galeriaInstancia = galeria.crear(
       raiz.querySelector("[data-galeria]"),
-      todasLasFotos(producto),
+      todasLasFotos(producto, colorElegido),
       producto.nombre,
     );
 

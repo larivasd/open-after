@@ -135,7 +135,7 @@
         <a href="${rutaProducto(linea.producto)}">
           <img
             class="linea__foto"
-            src="${rutaFoto(linea.producto, 1)}"
+            src="${rutaFoto(linea.producto, linea.color, 1)}"
             alt=""
             width="72"
             height="90"
