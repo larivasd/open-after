@@ -436,7 +436,12 @@
   width: auto;
   aspect-ratio: 4 / 5;
   cursor: zoom-in;
-  touch-action: pan-y;
+  /* El swipe horizontal lo gobierna el carrusel de adentro (ver
+     .galeria__carrusel): si este marco restringiera el eje horizontal,
+     el navegador trataría el gesto de forma más lenta y menos fluida,
+     aunque el carrusel por su cuenta sí lo permita. El zoom con el
+     cursor ya se limita a mouse en JS, así que no hace falta
+     restringir el táctil aquí. */
 }
 
 @media (max-width: 60rem) {

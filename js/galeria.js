@@ -137,18 +137,22 @@
     }
 
     /* Detecta cuando el usuario desliza el carrusel con el dedo o el mouse,
-       sin pasar por `mostrar()` (así no reinicia el propio scroll). */
+       sin pasar por `mostrar()` (así no reinicia el propio scroll). Se
+       actualiza cuadro a cuadro (requestAnimationFrame) en vez de esperar a
+       que el dedo se detenga: así el punto activo sigue al dedo mientras se
+       desliza, en lugar de ir con retraso. */
     function conectarCarrusel() {
-      let pendiente;
+      let cuadroPendiente = null;
       carrusel.addEventListener("scroll", () => {
-        clearTimeout(pendiente);
-        pendiente = setTimeout(() => {
+        if (cuadroPendiente) return;
+        cuadroPendiente = requestAnimationFrame(() => {
+          cuadroPendiente = null;
           const nuevo = Math.round(carrusel.scrollLeft / carrusel.clientWidth);
           if (nuevo !== indice && nuevo >= 0 && nuevo < fotos.length) {
             indice = nuevo;
             sincronizar();
           }
-        }, 100);
+        });
       });
     }
 
