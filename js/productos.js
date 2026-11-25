@@ -84,7 +84,7 @@ window.OA.productos = Object.freeze([
     nuevo: true,
     estado: "disponible",
     colores: [
-      { nombre: "Coñac", hex: "#96603A", fotos: 3 },
+      { nombre: "Miel", hex: "#96603A", fotos: 3 },
       { nombre: "Negro", hex: "#1A1A1A", fotos: 3 },
     ],
     material:
@@ -101,11 +101,9 @@ window.OA.productos = Object.freeze([
     ],
     cuidados:
       "Limpiar con crema limpiadora para bolsos o con un paño suave ligeramente húmedo. No usar detergentes abrasivos ni cepillos. No lavar en máquina. No sumergir en agua. Evitar peso excesivo o presión prolongada para conservar su forma. Guardar en lugar seco.",
-    // Ni "Coñac" ni "Negro" aparecen tal cual entre los colores oficiales
-    // de Zoe en levursse.com (son Miel, Azul oscuro, Rojo y Beige). "Coñac"
-    // es visualmente parecido a "Miel", pero no confirmé que sea el mismo
-    // tono exacto: revisar la foto contra la página oficial antes de
-    // renombrarlo.
+    // "Negro" no aparece entre los colores oficiales de Zoe en
+    // levursse.com (son Miel, Azul oscuro, Rojo y Beige): revisar si es
+    // una variante propia o si el nombre debería ajustarse.
     referenciaOficial: "https://levursse.com/products/cartera-zoe-azul-oscuro",
   },
   {

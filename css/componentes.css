@@ -355,6 +355,7 @@
 }
 
 .tarjeta__color-punto {
+  position: relative;
   width: 0.85rem;
   height: 0.85rem;
   border: none;
@@ -374,6 +375,38 @@
 .tarjeta__color-punto:focus-visible {
   outline: 2px solid var(--c-ink);
   outline-offset: 2px;
+}
+
+/* Tooltip propio con el nombre del color: el atributo title nativo tarda
+   en aparecer en escritorio y casi nunca se ve en móvil, así que se pinta
+   a mano con el nombre que trae data-nombre. */
+.tarjeta__color-punto::after {
+  content: attr(data-nombre);
+  position: absolute;
+  bottom: calc(100% + 0.5rem);
+  left: 50%;
+  translate: -50% 0;
+  padding: 0.3em 0.7em;
+  background-color: var(--c-ink);
+  color: var(--c-bone);
+  font-size: var(--text-micro);
+  white-space: nowrap;
+  border-radius: var(--radius-control);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-fast) linear;
+  z-index: 2;
+}
+
+.tarjeta__color-punto:hover::after,
+.tarjeta__color-punto:focus-visible::after {
+  opacity: 1;
+}
+
+@media (hover: none) {
+  .tarjeta__color-punto::after {
+    content: none;
+  }
 }
 
 /* Con dos tarjetas por fila no cabe "Bandolera Mía" y el precio en la misma

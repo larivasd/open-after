@@ -22,8 +22,9 @@
 
   /* Puntos de color bajo el nombre: igual que en la ficha, un color con
      "hex2" se pinta mitad y mitad. Van FUERA del <a> de la tarjeta (ver
-     tarjeta()) para poder hacer clic en un punto sin navegar a la ficha;
-     el `title` nativo hace de tooltip con el nombre del color. */
+     tarjeta()) para poder hacer clic en un punto sin navegar a la ficha.
+     data-nombre alimenta el tooltip propio de css/componentes.css (el
+     title nativo tarda en aparecer y casi no se ve en móvil). */
   function marcaColores(producto) {
     const puntos = producto.colores
       .map((c, i) => {
@@ -35,9 +36,9 @@
             class="tarjeta__color-punto"
             type="button"
             style="background: ${fondo}"
-            title="${c.nombre}"
             aria-label="Ver en ${c.nombre}"
             aria-pressed="${String(i === 0)}"
+            data-nombre="${c.nombre}"
             data-foto="${rutaFoto(producto, c.nombre, 1)}"
             data-alt="${producto.nombre} en ${c.nombre}"
           ></button>
