@@ -2,9 +2,12 @@
    Open After — Galería de producto
    --------------------------------------------------------------------------
    Zoom sin librerías: se mueve el background-position del marco, que es una
-   propiedad que el compositor puede resolver sin recalcular layout. En táctil
-   el zoom real lo hace el navegador con pinch dentro del lightbox, que es
-   más fluido que cualquier gestor de gestos en JS.
+   propiedad que el compositor puede resolver sin recalcular layout.
+
+   Las fotos viven en un carrusel con scroll-snap nativo: eso da swipe táctil
+   real sin JS de gestos. "mostrar(i)" desplaza el carrusel a esa foto; un
+   listener de scroll detecta cuando el usuario desliza a mano y sincroniza
+   el resto (miniaturas/puntos, lightbox) sin volver a disparar el scroll.
 
    Cada color del producto trae su propia tanda de fotos, así que la galería
    expone `actualizar(nuevasFotos)` para repintarse cuando se elige otro color
@@ -25,7 +28,7 @@
     let fotos = fotosIniciales;
     let indice = 0;
     let marco;
-    let principal;
+    let carrusel;
     let lightbox = null;
     let ultimoFoco = null;
 
@@ -34,6 +37,23 @@
        miniaturas se reconstruyen desde cero con la nueva tanda de fotos. */
 
     function pintar() {
+      const diapositivas = fotos
+        .map(
+          (src, i) => html`
+            <img
+              class="galeria__foto"
+              src="${src}"
+              alt="${nombreProducto}, foto ${i + 1} de ${fotos.length}"
+              width="800"
+              height="1000"
+              loading="${i === 0 ? "eager" : "lazy"}"
+              fetchpriority="${i === 0 ? "high" : "auto"}"
+              decoding="async"
+            />
+          `,
+        )
+        .join("");
+
       const miniaturas = fotos
         .map(
           (src, i) => html`
@@ -67,15 +87,9 @@
             tabindex="0"
             aria-label="Ampliar la foto de ${nombreProducto}"
           >
-            <img
-              data-principal
-              src="${fotos[0]}"
-              alt="${nombreProducto}, foto 1 de ${fotos.length}"
-              width="800"
-              height="1000"
-              fetchpriority="high"
-              decoding="async"
-            />
+            <div class="galeria__carrusel" data-carrusel>
+              ${raw(diapositivas)}
+            </div>
             <span class="galeria__pista">${raw(iconos.lupaMas)} Ampliar</span>
           </div>
           ${raw(
@@ -87,16 +101,16 @@
       `;
 
       marco = contenedor.querySelector("[data-marco]");
-      principal = contenedor.querySelector("[data-principal]");
+      carrusel = contenedor.querySelector("[data-carrusel]");
       conectarMarco();
+      conectarCarrusel();
     }
 
     /* --- Cambio de foto ---------------------------------------------------- */
 
-    function mostrar(nuevo) {
-      indice = (nuevo + fotos.length) % fotos.length;
-      principal.src = fotos[indice];
-      principal.alt = `${nombreProducto}, foto ${indice + 1} de ${fotos.length}`;
+    /* Actualiza miniaturas/lightbox para la foto actual, sin mover el
+       carrusel: lo usan tanto `mostrar()` como el listener de scroll. */
+    function sincronizar() {
       marco.style.backgroundImage = "";
       marco.dataset.zoom = "false";
 
@@ -108,6 +122,34 @@
       });
 
       if (lightbox) actualizarLightbox();
+    }
+
+    /* Para saltar a una foto a propósito: clic en miniatura/punto, flechas
+       de teclado o los botones del lightbox. Desliza el carrusel y listo:
+       el listener de scroll no hace nada porque el índice ya va a coincidir. */
+    function mostrar(nuevo) {
+      indice = (nuevo + fotos.length) % fotos.length;
+      carrusel.scrollTo({
+        left: indice * carrusel.clientWidth,
+        behavior: "smooth",
+      });
+      sincronizar();
+    }
+
+    /* Detecta cuando el usuario desliza el carrusel con el dedo o el mouse,
+       sin pasar por `mostrar()` (así no reinicia el propio scroll). */
+    function conectarCarrusel() {
+      let pendiente;
+      carrusel.addEventListener("scroll", () => {
+        clearTimeout(pendiente);
+        pendiente = setTimeout(() => {
+          const nuevo = Math.round(carrusel.scrollLeft / carrusel.clientWidth);
+          if (nuevo !== indice && nuevo >= 0 && nuevo < fotos.length) {
+            indice = nuevo;
+            sincronizar();
+          }
+        }, 100);
+      });
     }
 
     /* Cambia a otro color: nuevas fotos, se vuelve a la primera y se cierra

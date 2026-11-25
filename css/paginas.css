@@ -448,6 +448,22 @@
   }
 }
 
+/* Carrusel con scroll-snap nativo: da swipe táctil real sin JS de gestos.
+   Cada foto ocupa el 100% del marco; deslizar pasa a la siguiente/anterior. */
+.galeria__carrusel {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  touch-action: pan-x pan-y;
+  scrollbar-width: none;
+}
+
+.galeria__carrusel::-webkit-scrollbar {
+  display: none;
+}
+
 .galeria__marco img {
   width: 100%;
   height: 100%;
@@ -455,7 +471,12 @@
   transition: opacity var(--dur-fast) linear;
 }
 
-/* Al hacer zoom se oculta el <img> y queda visible el background ampliado. */
+.galeria__foto {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+}
+
+/* Al hacer zoom se ocultan las fotos y queda visible el background ampliado. */
 .galeria__marco[data-zoom="true"] img {
   opacity: 0;
 }
@@ -501,13 +522,15 @@
   overflow-y: auto;
 }
 
+/* En mobile la foto se desliza (swipe) y las miniaturas se vuelven puntos
+   de paginación debajo, en vez de una tira de imágenes pequeñas. */
 @media (max-width: 60rem) {
   .galeria__miniaturas {
     grid-column: 1;
     grid-row: 2;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(4.5rem, 1fr));
-    gap: var(--space-2xs);
+    display: flex;
+    justify-content: center;
+    gap: var(--space-3xs);
     overflow-y: visible;
   }
 }
@@ -520,7 +543,7 @@
   border-radius: var(--radius-shot);
   aspect-ratio: 1;
   padding: 0;
-  transition: box-shadow var(--dur-fast) linear;
+  transition: box-shadow var(--dur-fast) linear, background-color var(--dur-fast) linear;
   box-shadow: inset 0 0 0 1px var(--c-line);
 }
 
@@ -536,6 +559,29 @@
 
 .miniatura[aria-current="true"] {
   box-shadow: inset 0 0 0 2px var(--c-ink);
+}
+
+@media (max-width: 60rem) {
+  .miniatura {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background-color: var(--c-line-strong);
+    box-shadow: none;
+  }
+
+  .miniatura img {
+    display: none;
+  }
+
+  .miniatura:hover {
+    box-shadow: none;
+  }
+
+  .miniatura[aria-current="true"] {
+    background-color: var(--c-ink);
+    box-shadow: none;
+  }
 }
 
 /* --- Panel de compra ------------------------------------------------------ */
@@ -641,13 +687,22 @@
   margin-top: var(--space-xl);
 }
 
-/* En mobile .ficha pasa a una sola columna, y la galería queda primero.
-   Sin esto, elegir color obliga a pasar por el párrafo de descripción:
-   aquí el color sube justo debajo de la foto, antes de la descripción. */
+/* En mobile .ficha pasa a una sola columna, y el DOM trae primero la foto
+   y luego todo el bloque de compra. Eso obliga a pasar por el título, el
+   precio y la descripción antes de llegar al color. Para que el orden sea
+   el de una app de verdad (título, foto, precio, color, el resto), ".compra"
+   se vuelve "display: contents": deja de ser una caja propia y sus hijos
+   pasan a ordenarse junto con la foto, directamente dentro de ".ficha". */
 @media (max-width: 60rem) {
+  .ficha {
+    /* El espaciado entre bloques ya lo da el margen propio de cada uno
+       (igual que en el flujo normal de antes); con "gap" también puesto
+       se sumarían los dos y quedaría todo demasiado separado. */
+    gap: 0;
+  }
+
   .compra {
-    display: flex;
-    flex-direction: column;
+    display: contents;
   }
 
   .compra__categoria {
@@ -658,32 +713,37 @@
     order: 2;
   }
 
-  .compra__precio {
+  [data-galeria] {
     order: 3;
+    margin-top: var(--space-sm);
   }
 
-  .campo-color {
+  .compra__precio {
     order: 4;
   }
 
-  .compra__descripcion {
+  .campo-color {
     order: 5;
   }
 
-  .campo-cantidad {
+  .compra__descripcion {
     order: 6;
   }
 
-  .compra__acciones {
+  .campo-cantidad {
     order: 7;
   }
 
-  .compra__aviso {
+  .compra__acciones {
     order: 8;
   }
 
-  .ficha-detalles {
+  .compra__aviso {
     order: 9;
+  }
+
+  .ficha-detalles {
+    order: 10;
   }
 }
 
