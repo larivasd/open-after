@@ -31,7 +31,7 @@ window.OA = window.OA || {};
 window.OA.productos = Object.freeze([
   {
     id: "cala",
-    nombre: "Cartera Cala",
+    nombre: "Cala",
     categoria: "Cartera",
     precio: 55,
     destacado: true,
@@ -62,7 +62,7 @@ window.OA.productos = Object.freeze([
   },
   {
     id: "zoe",
-    nombre: "Bandolera Zoe",
+    nombre: "Zoe",
     categoria: "Bandolera",
     precio: 35,
     destacado: true,
@@ -87,7 +87,7 @@ window.OA.productos = Object.freeze([
   },
   {
     id: "camila",
-    nombre: "Tote Camila",
+    nombre: "Camila",
     categoria: "Tote",
     precio: 80,
     destacado: true,
@@ -112,7 +112,7 @@ window.OA.productos = Object.freeze([
   },
   {
     id: "elly",
-    nombre: "Bandolera Elly",
+    nombre: "Elly",
     categoria: "Bandolera",
     precio: 60,
     destacado: false,
@@ -134,7 +134,7 @@ window.OA.productos = Object.freeze([
   },
   {
     id: "vita",
-    nombre: "Bandolera Vita",
+    nombre: "Vita",
     categoria: "Bandolera",
     precio: 70,
     destacado: true,
@@ -156,7 +156,7 @@ window.OA.productos = Object.freeze([
   },
   {
     id: "ritmo",
-    nombre: "Bandolera Ritmo",
+    nombre: "Ritmo",
     categoria: "Bandolera",
     precio: 75,
     destacado: false,
@@ -181,7 +181,7 @@ window.OA.productos = Object.freeze([
   },
   {
     id: "jessica",
-    nombre: "Shopper Jessica",
+    nombre: "Jessica",
     categoria: "Shopper",
     precio: 40,
     destacado: false,
