@@ -147,17 +147,25 @@ window.OA.productos = Object.freeze([
     nuevo: true,
     estado: "disponible",
     colores: [{ nombre: "Negro", hex: "#1A1A1A", fotos: 4 }],
-    material: "Cuero vegano liso con herrajes dorados",
-    medidas: "26 × 13 × 9 cm",
+    material:
+      "PVC sintético o PU de alta densidad, con herrajes en zamak color oro y forro interior en poliéster sublimado",
+    medidas: "30 × 12 × 11 cm",
     descripcion:
-      "Bandolera alargada tipo baguette, con dos asas ajustables y una correa adicional estampada que se puede intercambiar según el look. Cierre superior de cremallera con bolsillo frontal.",
+      "Bolso mediano de silueta estructurada tipo baguette o baúl alargado, con acabado texturizado y brillo sutil. Sus líneas limpias mantienen la forma y ofrecen versatilidad tanto en looks casuales como elegantes, con asas superiores con hebillas decorativas y argollas laterales para adaptarlo a tu estilo.",
     detalles: [
-      "Dos asas ajustables: al hombro o cruzada",
-      "Correa estampada desmontable incluida",
-      "Bolsillo frontal con cierre",
-      "Placa de la marca al frente",
+      "Asas superiores con hebillas decorativas y argollas laterales",
+      "Cierre superior con cremallera en nylon",
+      "Placa frontal con detalles de la marca",
+      "Herrajes en zamak color oro",
+      "Forro interior en poliéster sublimado",
+      "Hecho en Colombia",
     ],
-    cuidados: "Limpiar con paño húmedo.",
+    cuidados:
+      "Limpiar en seco con un paño suave, seco o ligeramente humedecido con agua. Aplicar crema limpiadora especial para bolsos sintéticos para conservar su brillo y textura. Evitar el contacto con alcohol, solventes, perfumes directos o superficies abrasivas que puedan rayar o desgastar el recubrimiento. Guardar con relleno interior para que no pierda la forma.",
+    // A diferencia de los demás, este texto no lo verifiqué yo mismo en
+    // levursse.com: lo encontró Gemini en una ficha archivada/oculta del
+    // modelo "Bolso Ely". No hay referenciaOficial porque no tengo la URL
+    // exacta; si aparece, agregarla aquí.
   },
   {
     id: "vita",

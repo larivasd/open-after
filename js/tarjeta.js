@@ -20,6 +20,27 @@
     return "";
   }
 
+  /* Puntos de color bajo el nombre: igual que en la ficha, un color con
+     "hex2" se pinta mitad y mitad. */
+  function marcaColores(producto) {
+    const puntos = producto.colores
+      .map((c) => {
+        const fondo = c.hex2
+          ? `linear-gradient(135deg, ${c.hex} 50%, ${c.hex2} 50%)`
+          : c.hex;
+        return `<span class="tarjeta__color-punto" style="background: ${fondo}" title="${c.nombre}"></span>`;
+      })
+      .join("");
+
+    const nombres = producto.colores.map((c) => c.nombre).join(", ");
+
+    return html`
+      <div class="tarjeta__colores" aria-label="Colores disponibles: ${nombres}">
+        ${raw(puntos)}
+      </div>
+    `;
+  }
+
   /* `prioridad` marca las primeras tarjetas visibles: sin lazy y con
      fetchpriority alto, para que la LCP no espere. El resto va perezoso. */
   function tarjeta(producto, { prioridad = false } = {}) {
@@ -66,11 +87,8 @@
             >${formatearPrecio(producto.precio)}</span
           >
         </div>
-        <p class="tarjeta__meta">
-          ${producto.categoria} ·
-          ${producto.colores.length}
-          ${producto.colores.length === 1 ? "color" : "colores"}
-        </p>
+        ${producto.colores.length > 1 ? raw(marcaColores(producto)) : ""}
+        <p class="tarjeta__meta">${producto.categoria}</p>
       </a>
     `;
   }

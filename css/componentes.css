@@ -353,6 +353,23 @@
   color: var(--c-ink-faint);
 }
 
+/* Puntos de color: dejan ver de un vistazo qué variantes tiene el bolso,
+   sin tener que entrar a la ficha (como en Amazon). */
+.tarjeta__colores {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: var(--space-3xs);
+}
+
+.tarjeta__color-punto {
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 15%);
+  flex-shrink: 0;
+}
+
 /* Con dos tarjetas por fila no cabe "Bandolera Mía" y el precio en la misma
    línea, así que el precio pasa debajo. */
 @media (max-width: 40rem) {
