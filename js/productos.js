@@ -24,6 +24,13 @@
                        coordinar el pedido.
      - "oculto"      → no aparece en ningún lado del sitio (ni catálogo,
                        ni portada, ni su propia página).
+
+   `referenciaOficial` (opcional) es el link al producto equivalente en
+   levursse.com de donde se copió nombre de color, descripción, detalles
+   y cuidados tal cual los publica la marca. No se muestra en el sitio:
+   es solo para poder volver a esa página si hay que verificar algo.
+   Si un producto no tiene este campo es porque no se encontró (todavía)
+   un equivalente exacto por nombre en el sitio oficial.
    ========================================================================== */
 
 window.OA = window.OA || {};
@@ -49,7 +56,6 @@ window.OA.productos = Object.freeze([
     material:
       "PVC de alta densidad, con herrajes en zamak color oro y forro interior en poliéster sublimado",
     medidas: "22 × 23 × 15 cm",
-    capacidad: "4 L",
     descripcion:
       "Compacto por fuera, organizado por dentro. Cala es un bolso estructurado en PVC pensado para llevar lo esencial con orden. Cuenta con manija corta y una correa larga graduable en el mismo tono para usarlo de diferentes formas. En el interior incorpora un bolsillo con cremallera y otro bolsillo abierto. Su broche magnético y el mosquetón interior que une los laterales ayudan a mantener la apertura del bolso más recogida. Además, incluye pañoleta para darle un detalle diferente al diseño.",
     detalles: [
@@ -63,6 +69,11 @@ window.OA.productos = Object.freeze([
     ],
     cuidados:
       "Limpiar con crema limpiadora para bolsos o con un paño suave ligeramente húmedo. No usar detergentes abrasivos ni cepillos. No lavar en máquina. No sumergir en agua. Evitar peso excesivo o presión prolongada para conservar su forma. Guardar en lugar seco.",
+    // "Azul marino" y "Negro y camel" no aparecen como colores oficiales de
+    // Cala en levursse.com (los oficiales son Azul celeste, Menta, Negro,
+    // Rosa, Miel, Rojo y Salvia): revisar si son variantes propias o si el
+    // nombre de color debería ajustarse.
+    referenciaOficial: "https://levursse.com/products/bolso-2-azul-celeste",
   },
   {
     id: "zoe",
@@ -79,7 +90,6 @@ window.OA.productos = Object.freeze([
     material:
       "PVC con herraje en zamak color oro, cremallera en nylon y forro interior en poliéster sublimado",
     medidas: "23 × 19 × 9 cm",
-    capacidad: "2 L",
     descripcion:
       "Ideal para los días que necesitas practicidad y que tu outfit resalte. En su interior dispone de tres compartimientos; el de mayor espacio tiene cierre en cremallera para mayor seguridad. Además, incluye una correa ajustable en el mismo material.",
     detalles: [
@@ -91,6 +101,10 @@ window.OA.productos = Object.freeze([
     ],
     cuidados:
       "Limpiar con crema limpiadora para bolsos o con un paño suave ligeramente húmedo. No usar detergentes abrasivos ni cepillos. No lavar en máquina. No sumergir en agua. Evitar peso excesivo o presión prolongada para conservar su forma. Guardar en lugar seco.",
+    // "Negro" no aparece como color oficial de Zoe en levursse.com (los
+    // oficiales son Miel, Azul oscuro, Rojo y Beige): revisar si es una
+    // variante propia o si el nombre de color debería ajustarse.
+    referenciaOficial: "https://levursse.com/products/cartera-zoe-azul-oscuro",
   },
   {
     id: "camila",
@@ -101,21 +115,28 @@ window.OA.productos = Object.freeze([
     nuevo: false,
     estado: "disponible",
     colores: [
-      { nombre: "Rosa", hex: "#E6C9B8", fotos: 3 },
-      { nombre: "Azul marino", hex: "#1F2A44", fotos: 3 },
+      // Antes decía "Rosa" y "Azul marino": en levursse.com este color se
+      // llama "Beige" y el azul se llama simplemente "Azul".
+      { nombre: "Beige", hex: "#E6C9B8", fotos: 3 },
+      { nombre: "Azul", hex: "#1F2A44", fotos: 3 },
     ],
-    material: "Cuero vegano liso con cierre de broche giratorio",
-    medidas: "34 × 27 × 13 cm",
-    capacidad: "12 L",
+    material:
+      "PVC de alta densidad con textura granulada, herrajes en zamak color oro y forro interior en poliéster sublimado",
+    medidas: "36 × 25 × 10 cm",
     descripcion:
-      "Tote estructurado con cierre de broche giratorio al frente. Dos asas superiores y correa cruzada desmontable para llevarlo como bandolera cuando hacen falta las manos libres.",
+      "Espacio y organización para acompañarte durante todo el día. Base es un bolso amplio y estructurado en PVC. Su interior cuenta con división central y bolsillo con cremallera para ayudarte a mantener tus cosas organizadas. Incluye una correa intercambiable y graduable tipo cinturón para llevarlo al hombro o cruzado.",
     detalles: [
-      "Cierre de broche giratorio",
-      "Dos asas superiores",
-      "Correa cruzada desmontable",
-      "Bolsillo trasero con cierre",
+      "Diseño estructurado con broche frontal metálico",
+      "Interior amplio con división central y bolsillo interior con cremallera",
+      "Correa intercambiable y graduable tipo cinturón, al hombro o cruzado",
+      "Bolsillo posterior con cremallera",
+      "Herrajes en zamak color oro",
+      "Forro interior en poliéster sublimado",
+      "Hecho en Colombia",
     ],
-    cuidados: "Limpiar con paño húmedo. Hidratar cada 6 meses.",
+    cuidados:
+      "Limpiar con un paño suave ligeramente húmedo o con crema limpiadora para bolsos. Material de fácil mantenimiento. No lavar en máquina. No usar cepillos ni detergentes fuertes que puedan afectar el color o el acabado. No colocar peso excesivo ni sobrecargar, para conservar su estructura.",
+    referenciaOficial: "https://levursse.com/products/bolso-base-rosa-palido",
   },
   {
     id: "elly",
@@ -128,7 +149,6 @@ window.OA.productos = Object.freeze([
     colores: [{ nombre: "Negro", hex: "#1A1A1A", fotos: 4 }],
     material: "Cuero vegano liso con herrajes dorados",
     medidas: "26 × 13 × 9 cm",
-    capacidad: "3 L",
     descripcion:
       "Bandolera alargada tipo baguette, con dos asas ajustables y una correa adicional estampada que se puede intercambiar según el look. Cierre superior de cremallera con bolsillo frontal.",
     detalles: [
@@ -151,7 +171,6 @@ window.OA.productos = Object.freeze([
     material:
       "PVC sintético de alta densidad, con herrajes en zamak color oro y forro interior en poliéster sublimado",
     medidas: "22 × 17 × 8 cm",
-    capacidad: "3 L",
     descripcion:
       "Lo esencial contigo y las manos libres. Vita es una bandolera compacta en PVC que puedes llevar cruzada tipo pechera o adaptar a tu forma de uso gracias a su correa bordada artesanalmente, removible y graduable. Su interior incluye un bolsillo abierto pensado para guardar el celular separado de otros objetos y ayudar a evitar roces o rayones. Además, sus compartimientos exteriores con cremallera permiten mantener a la mano lo que usas con más frecuencia.",
     detalles: [
@@ -165,6 +184,8 @@ window.OA.productos = Object.freeze([
     ],
     cuidados:
       "Limpiar con paño seco o ligeramente húmedo. Evitar contacto directo con alcohol o perfumes. Guardar en su funda cuando no esté en uso. No exponer al sol prolongadamente.",
+    referenciaOficial:
+      "https://levursse.com/products/bandolera-vita-%F0%9F%90%A2-negro",
   },
   {
     id: "ritmo",
@@ -181,7 +202,6 @@ window.OA.productos = Object.freeze([
     material:
       "PVC de alta densidad, con herrajes en zamak color oro y forro interior en poliéster sublimado",
     medidas: "21 × 19 × 12 cm",
-    capacidad: "2.5 L",
     descripcion:
       "Dos compartimientos para organizar el día sin complicarte. Ritmo es un bolso pequeño y estructurado en PVC que distribuye el espacio en dos compartimientos independientes con cremallera. En el interior incorpora un bolsillo con cremallera y otro bolsillo abierto, para separar los objetos pequeños y mantenerlos más fáciles de encontrar. Incluye manijas cortas y una correa larga graduable tipo cinturón para llevarlo como manos libres.",
     detalles: [
@@ -195,6 +215,8 @@ window.OA.productos = Object.freeze([
     ],
     cuidados:
       "Limpiar con crema limpiadora para bolsos o con un paño suave ligeramente húmedo. No usar detergentes abrasivos ni cepillos. No lavar en máquina. No sumergir en agua. Evitar peso excesivo o presión prolongada para conservar su forma. Guardar en lugar seco.",
+    referenciaOficial:
+      "https://levursse.com/products/bolso-ritmo-coleccion-intencion-amarillo",
   },
   {
     id: "jessica",
@@ -205,20 +227,26 @@ window.OA.productos = Object.freeze([
     nuevo: true,
     estado: "disponible",
     colores: [
-      { nombre: "Amarillo", hex: "#C9962D", fotos: 1 },
+      // Antes decía "Amarillo": en levursse.com este tono de tejido se
+      // llama "Mostaza" (los únicos colores de este modelo son Negro y
+      // Mostaza).
+      { nombre: "Mostaza", hex: "#C9962D", fotos: 1 },
       { nombre: "Negro", hex: "#1A1A1A", fotos: 2 },
     ],
-    material: "Tejido crochet de algodón con asa de cuero",
-    medidas: "40 × 38 × 14 cm",
-    capacidad: "16 L",
+    material: "Tejido de hilo (crochet), con correa de cuero ajustable",
+    medidas: "30 × 33 × 10 cm",
     descripcion:
-      "Shopper tejida a crochet en rayas, con asa de cuero a juego con el color. Liviana y amplia, ideal para el día a día o la playa.",
+      "Un bolso que juega con el contraste y la textura. Su diseño tejido con franjas crea un ritmo visual sutil que aporta carácter, mientras su silueta flexible se adapta al movimiento con naturalidad. Es liviano, cómodo y fácil de llevar, con correa ajustable para usar al hombro.",
     detalles: [
-      "Tejido crochet de algodón",
-      "Asa de cuero a juego con el color",
-      "Interior amplio sin forro",
-      "Cada pieza puede variar ligeramente por ser tejida a mano",
+      "Diseño tejido a rayas, con bolsita organizadora interna con cremallera",
+      "Bolsa interna: 30 × 25 × 4 cm",
+      "Correa ajustable para usar al hombro",
+      "Ligero, amplio y funcional para uso diario",
+      "Hecho en Colombia",
     ],
-    cuidados: "Limpiar con paño seco. Evitar exposición prolongada al agua.",
+    cuidados:
+      "Lavar a mano con jabón suave. No lavar en lavadora. No restregar sobre superficies ásperas. Secar al aire libre. La correa puede limpiarse con un paño suave ligeramente húmedo.",
+    referenciaOficial:
+      "https://levursse.com/products/bolso-tejido-con-funda-interna-3",
   },
 ]);

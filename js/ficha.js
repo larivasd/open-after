@@ -103,8 +103,6 @@
             <dl class="especificaciones">
               <dt>Medidas</dt>
               <dd>${producto.medidas}</dd>
-              <dt>Capacidad</dt>
-              <dd>${producto.capacidad}</dd>
               <dt>Material</dt>
               <dd>${producto.material}</dd>
               <dt>Cuidados</dt>
