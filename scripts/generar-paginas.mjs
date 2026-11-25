@@ -68,6 +68,11 @@ function validar(productos) {
     if (!Number.isFinite(p.precio) || p.precio <= 0) {
       problemas.push(`${p.id}: precio inválido (${p.precio})`);
     }
+    if (!["disponible", "encargar", "oculto"].includes(p.estado)) {
+      problemas.push(
+        `${p.id}: "estado" debe ser "disponible", "encargar" u "oculto" (vino "${p.estado}")`,
+      );
+    }
     if (!Array.isArray(p.colores) || p.colores.length === 0) {
       problemas.push(`${p.id}: necesita al menos un color`);
     } else {
@@ -149,9 +154,10 @@ function plantilla(producto, config) {
       url,
       priceCurrency: config.moneda.codigo,
       price: String(producto.precio),
-      availability: producto.agotado
-        ? "https://schema.org/OutOfStock"
-        : "https://schema.org/InStock",
+      availability:
+        producto.estado === "encargar"
+          ? "https://schema.org/PreOrder"
+          : "https://schema.org/InStock",
       seller: { "@type": "Organization", name: config.marca },
     },
   };
@@ -250,11 +256,15 @@ async function main() {
   const { config, productos } = await cargarDatos();
   validar(productos);
 
+  // Un producto "oculto" no recibe página propia ni entrada en el sitemap:
+  // es la forma de que no se muestre en ningún lado del sitio.
+  const visibles = productos.filter((p) => p.estado !== "oculto");
+
   await mkdir(SALIDA, { recursive: true });
 
-  /* Borra páginas de bolsos que ya no están en el catálogo, para que no
-     queden URLs vivas de productos retirados. */
-  const vigentes = new Set(productos.map((p) => `${p.id}.html`));
+  /* Borra páginas de bolsos que ya no están en el catálogo (o que pasaron a
+     "oculto"), para que no queden URLs vivas de productos retirados. */
+  const vigentes = new Set(visibles.map((p) => `${p.id}.html`));
   const existentes = await readdir(SALIDA).catch(() => []);
   const huerfanas = existentes.filter(
     (f) => f.endsWith(".html") && !vigentes.has(f),
@@ -263,12 +273,12 @@ async function main() {
   await Promise.all(huerfanas.map((f) => unlink(join(SALIDA, f))));
 
   await Promise.all(
-    productos.map((p) =>
+    visibles.map((p) =>
       writeFile(join(SALIDA, `${p.id}.html`), plantilla(p, config), "utf8"),
     ),
   );
 
-  await writeFile(join(RAIZ, "sitemap.xml"), sitemap(productos, config), "utf8");
+  await writeFile(join(RAIZ, "sitemap.xml"), sitemap(visibles, config), "utf8");
 
   /* robots.txt se regenera aquí para que la URL del sitemap no se quede
      apuntando a un dominio viejo al cambiar `sitio` en config.js. */
@@ -278,7 +288,10 @@ async function main() {
     "utf8",
   );
 
-  console.log(`✓ ${productos.length} páginas de producto en productos/`);
+  console.log(`✓ ${visibles.length} páginas de producto en productos/`);
+  if (productos.length > visibles.length) {
+    console.log(`  (${productos.length - visibles.length} oculto(s), sin página)`);
+  }
   if (huerfanas.length > 0) {
     console.log(`✓ ${huerfanas.length} página(s) obsoleta(s) eliminada(s)`);
   }

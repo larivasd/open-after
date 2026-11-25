@@ -64,6 +64,11 @@
 
   const buscarPorId = (id) => productos().find((p) => p.id === id) || null;
 
+  /* Los productos "oculto" no deben aparecer en ningún listado (catálogo,
+     portada, relacionados, categorías del buscador). Su página tampoco se
+     genera: ver scripts/generar-paginas.mjs. */
+  const visibles = () => productos().filter((p) => p.estado !== "oculto");
+
   /* Devuelve la ruta de la foto n (1-indexada) de un color de un producto.
      Cambia la extensión aquí si usas .svg o .webp en lugar de .jpg. */
   const EXTENSION_FOTO = "jpg";
@@ -91,7 +96,7 @@
 
   const rutaProducto = (producto) => ruta(`productos/${producto.id}.html`);
 
-  const categorias = () => [...new Set(productos().map((p) => p.categoria))];
+  const categorias = () => [...new Set(visibles().map((p) => p.categoria))];
 
   /* --- Búsqueda ------------------------------------------------------------
      Normaliza acentos para que "bandolera mia" encuentre "Bandolera Mía".
@@ -173,6 +178,7 @@
     formatearPrecio,
     productos,
     buscarPorId,
+    visibles,
     rutaFoto,
     colorDe,
     todasLasFotos,

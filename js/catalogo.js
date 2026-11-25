@@ -10,7 +10,7 @@
   "use strict";
 
   const { util, tarjeta, iconos } = window.OA;
-  const { html, raw, productos, categorias, coincide, debounce } = util;
+  const { html, raw, visibles, categorias, coincide, debounce } = util;
 
   const ORDENES = Object.freeze({
     destacados: {
@@ -71,7 +71,7 @@
   /* --- Filtrado --------------------------------------------------------------- */
 
   function filtrar(estado) {
-    return productos()
+    return visibles()
       .filter((p) => estado.categoria === TODAS || p.categoria === estado.categoria)
       .filter((p) => coincide(p, estado.consulta))
       .slice() // no reordenar el catálogo original

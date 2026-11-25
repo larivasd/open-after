@@ -11,8 +11,8 @@
   const { html, raw, formatearPrecio, rutaFoto, rutaProducto } = window.OA.util;
 
   function insignia(producto) {
-    if (producto.agotado) {
-      return '<span class="insignia insignia--agotado">Agotado</span>';
+    if (producto.estado === "encargar") {
+      return '<span class="insignia insignia--encargar">Por encargo</span>';
     }
     if (producto.nuevo) {
       return '<span class="insignia insignia--nuevo">Nuevo</span>';

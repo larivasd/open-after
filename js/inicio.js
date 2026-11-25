@@ -9,19 +9,19 @@
   "use strict";
 
   const { util, tarjeta } = window.OA;
-  const { productos, rutaFoto, html, raw } = util;
+  const { visibles, rutaFoto, html, raw } = util;
 
+  /* Un bolso "por encargo" sigue apareciendo en destacados/novedades: la
+     idea es que lo vean y escriban por WhatsApp. Solo "oculto" se descarta,
+     y eso ya lo filtra visibles(). */
   function destacados() {
-    const marcados = productos().filter((p) => p.destacado && !p.agotado);
+    const marcados = visibles().filter((p) => p.destacado);
     // Si nadie está marcado como destacado, muestra los primeros disponibles.
-    const base = marcados.length > 0 ? marcados : productos().filter((p) => !p.agotado);
+    const base = marcados.length > 0 ? marcados : visibles();
     return base.slice(0, 4);
   }
 
-  const novedades = () =>
-    productos()
-      .filter((p) => p.nuevo && !p.agotado)
-      .slice(0, 4);
+  const novedades = () => visibles().filter((p) => p.nuevo).slice(0, 4);
 
   function pintarRejilla(selector, lista, opciones) {
     const zona = document.querySelector(selector);
@@ -81,9 +81,10 @@
     const zona = document.querySelector("[data-editorial-foto]");
     if (!zona) return;
 
-    const insignia = productos()
+    const insignia = visibles()
       .slice()
       .sort((a, b) => b.precio - a.precio)[0];
+    if (!insignia) return;
 
     zona.innerHTML = html`
       <img
@@ -103,7 +104,7 @@
 
   function pintarCuenta() {
     document.querySelectorAll("[data-cuenta-modelos]").forEach((nodo) => {
-      nodo.textContent = String(productos().length);
+      nodo.textContent = String(visibles().length);
     });
   }
 

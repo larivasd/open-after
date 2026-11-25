@@ -16,7 +16,7 @@
     buscarPorId,
     todasLasFotos,
     formatearPrecio,
-    productos,
+    visibles,
     ruta,
     limitar,
   } = util;
@@ -128,7 +128,9 @@
   }
 
   function marcaCompra() {
-    const agotado = producto.agotado;
+    // "Por encargo": se puede pedir, pero solo coordinando por WhatsApp, así
+    // que no tiene sentido dejar añadirlo al carrito como si hubiera stock.
+    const porEncargo = producto.estado === "encargar";
 
     return html`
       <div class="compra">
@@ -167,10 +169,10 @@
             class="btn btn--primario"
             type="button"
             data-agregar
-            ${raw(agotado ? "disabled" : "")}
+            ${raw(porEncargo ? "disabled" : "")}
           >
             ${raw(iconos.bolsa)}
-            ${agotado ? "Agotado" : "Añadir al carrito"}
+            ${porEncargo ? "Por encargo" : "Añadir al carrito"}
           </button>
           <a
             class="btn btn--whatsapp"
@@ -179,13 +181,14 @@
             target="_blank"
             rel="noopener"
           >
-            ${raw(iconos.whatsapp)} Consultar
+            ${raw(iconos.whatsapp)}
+            ${porEncargo ? "Pedir por WhatsApp" : "Consultar"}
           </a>
         </div>
 
         <p class="compra__aviso">
-          ${agotado
-            ? "Sin stock por ahora. Escríbenos y te avisamos cuando vuelva."
+          ${porEncargo
+            ? "Esta pieza se hace por encargo: escríbenos por WhatsApp para coordinar el pedido y el tiempo de entrega."
             : window.OA.config.envio.nota}
         </p>
 
@@ -197,7 +200,7 @@
   /* Relacionados: misma categoría primero, y si no llegan a cuatro se
      completa con el resto del catálogo. */
   function relacionados() {
-    const otros = productos().filter((p) => p.id !== producto.id);
+    const otros = visibles().filter((p) => p.id !== producto.id);
     const mismaCategoria = otros.filter(
       (p) => p.categoria === producto.categoria,
     );
@@ -304,6 +307,11 @@
 
     const id = document.documentElement.dataset.producto;
     producto = buscarPorId(id);
+
+    // Un producto "oculto" no debería tener página generada (ver
+    // generar-paginas.mjs), pero si alguien llega por un enlace viejo que
+    // quedó indexado, se trata igual que si ya no existiera.
+    if (producto && producto.estado === "oculto") producto = null;
 
     if (!producto) {
       // La página existe pero el producto ya no está en el catálogo.
