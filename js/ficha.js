@@ -73,7 +73,7 @@
       .join("");
 
     return html`
-      <div class="campo">
+      <div class="campo campo-color">
         <span class="campo__etiqueta">
           Color
           <span class="campo__valor" data-color-elegido>${colorElegido}</span>
@@ -87,7 +87,7 @@
 
   function marcaDetalles() {
     return html`
-      <div style="margin-top: var(--space-xl)">
+      <div class="ficha-detalles">
         <details class="detalle" open>
           <summary class="detalle__resumen">Detalles</summary>
           <div class="detalle__cuerpo">
@@ -139,7 +139,7 @@
 
         ${raw(marcaColores())}
 
-        <div class="campo">
+        <div class="campo campo-cantidad">
           <span class="campo__etiqueta" id="etiqueta-cantidad">Cantidad</span>
           <div class="cantidad" aria-labelledby="etiqueta-cantidad">
             <button

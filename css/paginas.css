@@ -378,7 +378,10 @@
 
 .ficha {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  /* La columna de la galería se ajusta a su propio tamaño (que depende del
+     alto disponible, no de un ancho fijo): así no queda hueco muerto entre
+     la foto y el texto, sea cual sea la pantalla. */
+  grid-template-columns: auto minmax(0, 1fr);
   gap: var(--space-xl);
   align-items: start;
   padding-block: var(--space-lg) var(--space-2xl);
@@ -401,9 +404,10 @@
   position: sticky;
   top: 6rem;
   display: grid;
-  grid-template-columns: 4.5rem 1fr;
+  /* La segunda columna es "auto": se ajusta al ancho que el marco necesite,
+     en vez de estirarse a lo que le deje la rejilla de .ficha. */
+  grid-template-columns: 4.5rem auto;
   gap: var(--space-2xs);
-  max-width: 30rem;
   justify-self: start;
 }
 
@@ -411,7 +415,6 @@
   .galeria {
     position: static;
     grid-template-columns: 1fr;
-    max-width: none;
     justify-self: stretch;
   }
 }
@@ -419,12 +422,18 @@
 .galeria__marco {
   grid-column: 2;
   grid-row: 1;
+  justify-self: start;
   position: relative;
   overflow: hidden;
   background-color: var(--c-shot);
   background-repeat: no-repeat;
   background-size: 210%;
   border-radius: var(--radius-shot);
+  /* El ancho sale del alto (vía aspect-ratio), y el alto sale del espacio
+     vertical real de la pantalla: así la foto aprovecha todo el alto
+     disponible sin forzar scroll, sea cual sea el monitor. */
+  height: min(calc(100vh - 10rem), 42rem);
+  width: auto;
   aspect-ratio: 4 / 5;
   cursor: zoom-in;
   touch-action: pan-y;
@@ -433,6 +442,9 @@
 @media (max-width: 60rem) {
   .galeria__marco {
     grid-column: 1;
+    justify-self: stretch;
+    width: 100%;
+    height: auto;
   }
 }
 
@@ -623,6 +635,56 @@
   margin-top: var(--space-xs);
   font-size: var(--text-small);
   color: var(--c-ink-faint);
+}
+
+.ficha-detalles {
+  margin-top: var(--space-xl);
+}
+
+/* En mobile .ficha pasa a una sola columna, y la galería queda primero.
+   Sin esto, elegir color obliga a pasar por el párrafo de descripción:
+   aquí el color sube justo debajo de la foto, antes de la descripción. */
+@media (max-width: 60rem) {
+  .compra {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .compra__categoria {
+    order: 1;
+  }
+
+  .compra__nombre {
+    order: 2;
+  }
+
+  .compra__precio {
+    order: 3;
+  }
+
+  .campo-color {
+    order: 4;
+  }
+
+  .compra__descripcion {
+    order: 5;
+  }
+
+  .campo-cantidad {
+    order: 6;
+  }
+
+  .compra__acciones {
+    order: 7;
+  }
+
+  .compra__aviso {
+    order: 8;
+  }
+
+  .ficha-detalles {
+    order: 9;
+  }
 }
 
 /* Detalles plegables: materiales, medidas, envío. */
