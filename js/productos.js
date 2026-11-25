@@ -32,13 +32,17 @@ window.OA.productos = Object.freeze([
       { nombre: "Rojo", hex: "#C0392B", fotos: 4 },
       { nombre: "Azul marino", hex: "#1F2A44", fotos: 4 },
       { nombre: "Negro", hex: "#1A1A1A", fotos: 4 },
+      // "hex2" marca un color de dos tonos: la muestra se pinta mitad y
+      // mitad. Este trae el asa y los herrajes en cuero camel.
+      { nombre: "Negro y camel", hex: "#1A1A1A", hex2: "#96603A", fotos: 4 },
       { nombre: "Rosa", hex: "#E7C3C2", fotos: 4 },
     ],
-    material: "Cuero vegano trenzado con asa y herrajes en cuero camel",
+    material:
+      "Cuero vegano trenzado; asa en cuero camel (en el mismo tono del cuerpo en la versión Negro)",
     medidas: "20 × 22 × 14 cm",
     capacidad: "4 L",
     descripcion:
-      "Cartera tipo balde en cuero vegano trenzado, con asa superior rígida en cuero camel y correa cruzada desmontable con hebillas doradas. Trae un pañuelo decorativo anudado al asa, a juego con cada color.",
+      "Cartera tipo balde en cuero vegano trenzado, con asa superior rígida y correa cruzada desmontable con hebillas doradas. Trae un pañuelo decorativo anudado al asa, a juego con cada color.",
     detalles: [
       "Correa cruzada desmontable con hebillas de metal dorado",
       "Cierre superior con solapa magnética",

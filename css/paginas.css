@@ -392,23 +392,33 @@
 }
 
 /* --- Galería --------------------------------------------------------------
-   Foto principal + tira de miniaturas. El zoom se hace moviendo el
-   background-position del propio marco: sin librerías y sin reflow. */
+   Miniaturas a la izquierda y foto principal a la derecha, como en una ficha
+   de catálogo de verdad: así la imagen no necesita ser enorme para lucir, y
+   el conjunto cabe en la pantalla sin hacer scroll. El zoom se hace moviendo
+   el background-position del propio marco: sin librerías y sin reflow. */
 
 .galeria {
   position: sticky;
   top: 6rem;
   display: grid;
+  grid-template-columns: 4.5rem 1fr;
   gap: var(--space-2xs);
+  max-width: 30rem;
+  justify-self: start;
 }
 
 @media (max-width: 60rem) {
   .galeria {
     position: static;
+    grid-template-columns: 1fr;
+    max-width: none;
+    justify-self: stretch;
   }
 }
 
 .galeria__marco {
+  grid-column: 2;
+  grid-row: 1;
   position: relative;
   overflow: hidden;
   background-color: var(--c-shot);
@@ -418,6 +428,12 @@
   aspect-ratio: 4 / 5;
   cursor: zoom-in;
   touch-action: pan-y;
+}
+
+@media (max-width: 60rem) {
+  .galeria__marco {
+    grid-column: 1;
+  }
 }
 
 .galeria__marco img {
@@ -464,14 +480,30 @@
 }
 
 .galeria__miniaturas {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(4.5rem, 1fr));
-  gap: var(--space-2xs);
+  grid-column: 1;
+  grid-row: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3xs);
+  align-self: stretch;
+  overflow-y: auto;
+}
+
+@media (max-width: 60rem) {
+  .galeria__miniaturas {
+    grid-column: 1;
+    grid-row: 2;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(4.5rem, 1fr));
+    gap: var(--space-2xs);
+    overflow-y: visible;
+  }
 }
 
 .miniatura {
   position: relative;
   overflow: hidden;
+  flex-shrink: 0;
   background-color: var(--c-shot);
   border-radius: var(--radius-shot);
   aspect-ratio: 1;
@@ -511,13 +543,13 @@
 }
 
 .compra__descripcion {
-  margin-top: var(--space-md);
+  margin-top: var(--space-sm);
   color: var(--c-ink-soft);
   max-width: var(--measure);
 }
 
 .campo {
-  margin-top: var(--space-lg);
+  margin-top: var(--space-md);
 }
 
 .campo__etiqueta {
@@ -580,7 +612,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-2xs);
-  margin-top: var(--space-lg);
+  margin-top: var(--space-md);
 }
 
 .compra__acciones .btn--primario {
@@ -588,7 +620,7 @@
 }
 
 .compra__aviso {
-  margin-top: var(--space-sm);
+  margin-top: var(--space-xs);
   font-size: var(--text-small);
   color: var(--c-ink-faint);
 }

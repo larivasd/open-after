@@ -47,8 +47,14 @@
     if (producto.colores.length <= 1) return "";
 
     const opciones = producto.colores
-      .map(
-        (c) => html`
+      .map((c) => {
+        // Un color con "hex2" es de dos tonos (p. ej. cuerpo negro con asa
+        // camel): la muestra se pinta mitad y mitad en vez de un solo tono.
+        const fondo = c.hex2
+          ? `linear-gradient(135deg, ${c.hex} 50%, ${c.hex2} 50%)`
+          : c.hex;
+
+        return html`
           <button
             class="color-opcion"
             type="button"
@@ -57,13 +63,13 @@
           >
             <span
               class="color-opcion__muestra"
-              style="background-color: ${c.hex}"
+              style="background: ${fondo}"
               aria-hidden="true"
             ></span>
             ${c.nombre}
           </button>
-        `,
-      )
+        `;
+      })
       .join("");
 
     return html`
@@ -135,7 +141,7 @@
 
         <div class="campo">
           <span class="campo__etiqueta" id="etiqueta-cantidad">Cantidad</span>
-          <div class="cantidad cantidad--grande" aria-labelledby="etiqueta-cantidad">
+          <div class="cantidad" aria-labelledby="etiqueta-cantidad">
             <button
               class="cantidad__btn"
               type="button"
@@ -158,7 +164,7 @@
 
         <div class="compra__acciones">
           <button
-            class="btn btn--primario btn--grande"
+            class="btn btn--primario"
             type="button"
             data-agregar
             ${raw(agotado ? "disabled" : "")}
@@ -167,7 +173,7 @@
             ${agotado ? "Agotado" : "Añadir al carrito"}
           </button>
           <a
-            class="btn btn--whatsapp btn--grande"
+            class="btn btn--whatsapp"
             data-consultar
             href="${whatsapp.enlaceProducto(producto, colorElegido)}"
             target="_blank"

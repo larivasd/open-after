@@ -27,6 +27,12 @@
     opacity var(--dur-fast) linear;
 }
 
+.btn svg {
+  width: 1.1em;
+  height: 1.1em;
+  flex-shrink: 0;
+}
+
 .btn:hover {
   transform: translateY(-1px);
 }
