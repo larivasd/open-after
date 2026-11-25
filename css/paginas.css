@@ -549,8 +549,11 @@
   border-radius: var(--radius-shot);
   aspect-ratio: 1;
   padding: 0;
-  transition: box-shadow var(--dur-fast) linear, background-color var(--dur-fast) linear;
-  box-shadow: inset 0 0 0 1.5px var(--c-line-strong);
+  /* Un box-shadow inset quedaría tapado por la foto (que llena el cuadro al
+     100%); un border de verdad sí se ve, porque box-sizing: border-box le
+     resta ese espacio a la imagen. */
+  border: 1px solid var(--c-line-strong);
+  transition: border-color var(--dur-fast) linear, background-color var(--dur-fast) linear;
 }
 
 .miniatura img {
@@ -560,11 +563,11 @@
 }
 
 .miniatura:hover {
-  box-shadow: inset 0 0 0 1px var(--c-line-strong);
+  border-color: var(--c-ink-faint);
 }
 
 .miniatura[aria-current="true"] {
-  box-shadow: inset 0 0 0 2px var(--c-ink);
+  border-color: var(--c-ink);
 }
 
 @media (max-width: 60rem) {
