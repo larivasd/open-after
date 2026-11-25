@@ -101,9 +101,11 @@ window.OA.productos = Object.freeze([
     ],
     cuidados:
       "Limpiar con crema limpiadora para bolsos o con un paño suave ligeramente húmedo. No usar detergentes abrasivos ni cepillos. No lavar en máquina. No sumergir en agua. Evitar peso excesivo o presión prolongada para conservar su forma. Guardar en lugar seco.",
-    // "Negro" no aparece como color oficial de Zoe en levursse.com (los
-    // oficiales son Miel, Azul oscuro, Rojo y Beige): revisar si es una
-    // variante propia o si el nombre de color debería ajustarse.
+    // Ni "Coñac" ni "Negro" aparecen tal cual entre los colores oficiales
+    // de Zoe en levursse.com (son Miel, Azul oscuro, Rojo y Beige). "Coñac"
+    // es visualmente parecido a "Miel", pero no confirmé que sea el mismo
+    // tono exacto: revisar la foto contra la página oficial antes de
+    // renombrarlo.
     referenciaOficial: "https://levursse.com/products/cartera-zoe-azul-oscuro",
   },
   {

@@ -293,7 +293,16 @@
   position: relative;
   display: flex;
   flex-direction: column;
+}
+
+/* El enlace cubre foto + nombre + precio. Los puntos de color quedan
+   fuera (ver tarjeta__colores) para poder hacer clic en uno sin navegar
+   a la ficha. */
+.tarjeta__enlace {
+  display: flex;
+  flex-direction: column;
   text-decoration: none;
+  color: inherit;
 }
 
 .tarjeta__marco {
@@ -304,29 +313,12 @@
   aspect-ratio: 4 / 5;
 }
 
+/* Foto fija: al pasar el mouse no cambia ni hace zoom. El punto de color
+   es quien decide qué foto se ve (ver el listener en tarjeta.js). */
 .tarjeta__foto {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform var(--dur-slow) var(--ease-out-expo);
-}
-
-/* Segunda foto revelada al pasar el cursor: se precarga con la tarjeta. */
-.tarjeta__foto--alterna {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  transition: opacity var(--dur-normal) var(--ease-out-soft);
-}
-
-.tarjeta:hover .tarjeta__foto,
-.tarjeta:focus-visible .tarjeta__foto {
-  transform: scale(1.045);
-}
-
-.tarjeta:hover .tarjeta__foto--alterna,
-.tarjeta:focus-visible .tarjeta__foto--alterna {
-  opacity: 1;
 }
 
 .tarjeta__cuerpo {
@@ -365,9 +357,23 @@
 .tarjeta__color-punto {
   width: 0.85rem;
   height: 0.85rem;
+  border: none;
   border-radius: 50%;
+  padding: 0;
+  cursor: pointer;
   box-shadow: inset 0 0 0 1px rgb(0 0 0 / 15%);
   flex-shrink: 0;
+  transition: box-shadow var(--dur-fast) linear;
+}
+
+.tarjeta__color-punto[aria-pressed="true"] {
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 15%), 0 0 0 2px var(--c-bone),
+    0 0 0 3.5px var(--c-ink);
+}
+
+.tarjeta__color-punto:focus-visible {
+  outline: 2px solid var(--c-ink);
+  outline-offset: 2px;
 }
 
 /* Con dos tarjetas por fila no cabe "Bandolera Mía" y el precio en la misma

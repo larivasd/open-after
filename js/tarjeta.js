@@ -21,75 +21,66 @@
   }
 
   /* Puntos de color bajo el nombre: igual que en la ficha, un color con
-     "hex2" se pinta mitad y mitad. */
+     "hex2" se pinta mitad y mitad. Van FUERA del <a> de la tarjeta (ver
+     tarjeta()) para poder hacer clic en un punto sin navegar a la ficha;
+     el `title` nativo hace de tooltip con el nombre del color. */
   function marcaColores(producto) {
     const puntos = producto.colores
-      .map((c) => {
+      .map((c, i) => {
         const fondo = c.hex2
           ? `linear-gradient(135deg, ${c.hex} 50%, ${c.hex2} 50%)`
           : c.hex;
-        return `<span class="tarjeta__color-punto" style="background: ${fondo}" title="${c.nombre}"></span>`;
+        return html`
+          <button
+            class="tarjeta__color-punto"
+            type="button"
+            style="background: ${fondo}"
+            title="${c.nombre}"
+            aria-label="Ver en ${c.nombre}"
+            aria-pressed="${String(i === 0)}"
+            data-foto="${rutaFoto(producto, c.nombre, 1)}"
+            data-alt="${producto.nombre} en ${c.nombre}"
+          ></button>
+        `;
       })
       .join("");
 
-    const nombres = producto.colores.map((c) => c.nombre).join(", ");
-
-    return html`
-      <div class="tarjeta__colores" aria-label="Colores disponibles: ${nombres}">
-        ${raw(puntos)}
-      </div>
-    `;
+    return html`<div class="tarjeta__colores">${raw(puntos)}</div>`;
   }
 
   /* `prioridad` marca las primeras tarjetas visibles: sin lazy y con
      fetchpriority alto, para que la LCP no espere. El resto va perezoso. */
   function tarjeta(producto, { prioridad = false } = {}) {
     const primerColor = producto.colores[0];
-    const tieneAlterna = primerColor.fotos > 1;
     const cargaPrincipal = prioridad
       ? 'loading="eager" fetchpriority="high"'
       : 'loading="lazy"';
 
     return html`
-      <a
-        class="tarjeta"
-        href="${rutaProducto(producto)}"
-        data-categoria="${producto.categoria}"
-      >
-        <div class="tarjeta__marco">
-          ${raw(insignia(producto))}
-          <img
-            class="tarjeta__foto"
-            src="${rutaFoto(producto, primerColor.nombre, 1)}"
-            alt="${producto.nombre} en ${primerColor.nombre}"
-            width="480"
-            height="600"
-            ${raw(cargaPrincipal)}
-            decoding="async"
-          />
-          ${raw(
-            tieneAlterna
-              ? html`<img
-                  class="tarjeta__foto tarjeta__foto--alterna"
-                  src="${rutaFoto(producto, primerColor.nombre, 2)}"
-                  alt=""
-                  width="480"
-                  height="600"
-                  loading="lazy"
-                  decoding="async"
-                />`
-              : "",
-          )}
-        </div>
-        <div class="tarjeta__cuerpo">
-          <h3 class="tarjeta__nombre">${producto.nombre}</h3>
-          <span class="tarjeta__precio precio"
-            >${formatearPrecio(producto.precio)}</span
-          >
-        </div>
+      <div class="tarjeta">
+        <a class="tarjeta__enlace" href="${rutaProducto(producto)}">
+          <div class="tarjeta__marco">
+            ${raw(insignia(producto))}
+            <img
+              class="tarjeta__foto"
+              src="${rutaFoto(producto, primerColor.nombre, 1)}"
+              alt="${producto.nombre} en ${primerColor.nombre}"
+              width="480"
+              height="600"
+              ${raw(cargaPrincipal)}
+              decoding="async"
+            />
+          </div>
+          <div class="tarjeta__cuerpo">
+            <h3 class="tarjeta__nombre">${producto.nombre}</h3>
+            <span class="tarjeta__precio precio"
+              >${formatearPrecio(producto.precio)}</span
+            >
+          </div>
+        </a>
         ${producto.colores.length > 1 ? raw(marcaColores(producto)) : ""}
         <p class="tarjeta__meta">${producto.categoria}</p>
-      </a>
+      </div>
     `;
   }
 
@@ -98,6 +89,26 @@
     productos
       .map((p, i) => tarjeta(p, { prioridad: i < prioridadHasta }))
       .join("");
+
+  /* Un solo listener delegado para toda la página: funciona sin importar
+     cuántas veces se repinte una rejilla (catálogo, portada, relacionados). */
+  document.addEventListener("click", (evento) => {
+    const punto = evento.target.closest(".tarjeta__color-punto");
+    if (!punto) return;
+
+    evento.preventDefault();
+
+    const tarjetaEl = punto.closest(".tarjeta");
+    const foto = tarjetaEl?.querySelector(".tarjeta__foto");
+    if (!foto) return;
+
+    foto.src = punto.dataset.foto;
+    foto.alt = punto.dataset.alt;
+
+    tarjetaEl.querySelectorAll(".tarjeta__color-punto").forEach((p) => {
+      p.setAttribute("aria-pressed", String(p === punto));
+    });
+  });
 
   window.OA.tarjeta = { tarjeta, rejilla };
 })();
