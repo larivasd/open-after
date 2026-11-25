@@ -91,6 +91,29 @@
       .map((p, i) => tarjeta(p, { prioridad: i < prioridadHasta }))
       .join("");
 
+  /* Las fotos de los demás colores no se piden hasta que se hace clic en
+     su punto: la primera vez tarda porque el navegador recién las está
+     descargando. Una vez la página está en reposo (sin pelear por ancho
+     de banda con las fotos principales), se precargan todas en silencio
+     para que el cambio de color se sienta instantáneo. */
+  function precargarFotosDeColores() {
+    const rutas = new Set();
+    document.querySelectorAll(".tarjeta__color-punto[data-foto]").forEach((p) => {
+      rutas.add(p.dataset.foto);
+    });
+    rutas.forEach((ruta) => {
+      new Image().src = ruta;
+    });
+  }
+
+  window.addEventListener("load", () => {
+    if ("requestIdleCallback" in window) {
+      requestIdleCallback(precargarFotosDeColores);
+    } else {
+      setTimeout(precargarFotosDeColores, 500);
+    }
+  });
+
   /* Un solo listener delegado para toda la página: funciona sin importar
      cuántas veces se repinte una rejilla (catálogo, portada, relacionados). */
   document.addEventListener("click", (evento) => {
