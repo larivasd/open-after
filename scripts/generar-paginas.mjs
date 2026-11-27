@@ -171,7 +171,8 @@ function plantilla(producto, config) {
     <meta name="description" content="${esc(descripcion)}" />
     <meta name="theme-color" content="#FAF7F2" />
     <link rel="canonical" href="${esc(url)}" />
-    <link rel="icon" href="../img/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="../img/favicon.png" type="image/png" />
+    <link rel="apple-touch-icon" href="../img/apple-touch-icon.png" />
 
     <!-- Previsualización al compartir este bolso por WhatsApp -->
     <meta property="og:type" content="product" />

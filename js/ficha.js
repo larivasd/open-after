@@ -85,6 +85,30 @@
     `;
   }
 
+  /* Medidas, material y cuidados son opcionales: un producto sin dato
+     oficial (p. ej. los monederos) simplemente no muestra esa fila. */
+  function marcaEspecificaciones() {
+    const filas = [
+      ["Medidas", producto.medidas],
+      ["Material", producto.material],
+      ["Cuidados", producto.cuidados],
+    ].filter(([, valor]) => valor);
+    if (filas.length === 0) return "";
+
+    const definiciones = filas
+      .map(([nombre, valor]) => html`<dt>${nombre}</dt><dd>${valor}</dd>`)
+      .join("");
+
+    return html`
+      <details class="detalle">
+        <summary class="detalle__resumen">Medidas y materiales</summary>
+        <div class="detalle__cuerpo">
+          <dl class="especificaciones">${raw(definiciones)}</dl>
+        </div>
+      </details>
+    `;
+  }
+
   function marcaDetalles() {
     return html`
       <div class="ficha-detalles">
@@ -97,19 +121,7 @@
           </div>
         </details>
 
-        <details class="detalle">
-          <summary class="detalle__resumen">Medidas y materiales</summary>
-          <div class="detalle__cuerpo">
-            <dl class="especificaciones">
-              <dt>Medidas</dt>
-              <dd>${producto.medidas}</dd>
-              <dt>Material</dt>
-              <dd>${producto.material}</dd>
-              <dt>Cuidados</dt>
-              <dd>${producto.cuidados}</dd>
-            </dl>
-          </div>
-        </details>
+        ${raw(marcaEspecificaciones())}
 
         <details class="detalle">
           <summary class="detalle__resumen">Envíos y pedidos</summary>

@@ -40,8 +40,17 @@
       <header class="encabezado" data-desplazado="false">
         <div class="contenedor encabezado__barra">
           <a class="marca" href="${ruta("index.html")}">
-            <span class="marca__nombre">${config.marca}</span>
-            <span class="marca__sub">${config.producto}</span>
+            <img
+              class="marca__logo"
+              src="${ruta("img/logo.png")}"
+              width="40"
+              height="40"
+              alt=""
+            />
+            <span class="marca__texto">
+              <span class="marca__nombre">${config.marca}</span>
+              <span class="marca__sub">${config.producto}</span>
+            </span>
           </a>
 
           <nav class="nav-principal" aria-label="Navegación principal" data-abierto="false">

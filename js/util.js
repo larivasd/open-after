@@ -122,7 +122,9 @@
             producto.material,
             producto.descripcion,
             producto.colores.map((c) => c.nombre).join(" "),
-          ].join(" "),
+          ]
+            .filter(Boolean)
+            .join(" "),
         ),
       );
     }
