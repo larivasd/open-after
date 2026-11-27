@@ -293,7 +293,7 @@ window.OA.productos = Object.freeze([
     id: "noma",
     nombre: "Noma",
     categoria: "Morral",
-    precio: 80,
+    precio: 65,
     destacado: false,
     nuevo: true,
     estado: "disponible",
